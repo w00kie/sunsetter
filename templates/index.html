@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <head>
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" media="screen" charset="utf-8">
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDsz9jssxKwvgEv977cDJ7mue7X6WZCbt8&sensor=true"></script>
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-<script>
-	// Load jQuery
-	google.load("jquery", "1");
-	google.load("jqueryui", "1");
-</script>
-<script type="text/javascript" src="{{ url_for('static', filename='tools.js') }}"></script>
+	<title>Sunsetter - find when the sun sets over there</title>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" media="screen" charset="utf-8">
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDsz9jssxKwvgEv977cDJ7mue7X6WZCbt8&sensor=true"></script>
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<script>
+		// Load jQuery
+		google.load("jquery", "1");
+		google.load("jqueryui", "1");
+	</script>
+	<script type="text/javascript" src="{{ url_for('static', filename='tools.js') }}"></script>
 </head>
 <body>
 	<div id="menu">
-		<p id="title">Sunsetter</p>
+		<h1 id="title">Sunsetter</h1>
 		<p id="step1" class="steps active">1. Click on your point of view.</p>
 		<p id="step2" class="steps">2. Click on where you expect to see the sun rise or set.</p>
 		<p id="step3" class="steps">3. You can move around the markers to try another combo.</p>
 		<p id="azimuth" style="display:none;"></p>
 		<p id="results"></p>
-		<div id="debug"><input type="submit" value="Where am I?" onclick="javascript:where();" /></div>
+		<p id="credits">&copy;2012 <a href="http://francois.rejete.com">Francois Rejete</a></p>
+		<!-- <div id="debug"><input type="submit" value="Where am I?" onclick="javascript:where();" /></div> -->
 	</div>
 	<div id="map_canvas"></div>
 </body>

@@ -42,6 +42,13 @@ body {
 	height:100%;
 }
 
+#credits {
+	position: absolute;
+	bottom: 0.5em;
+	font-size: 0.6em;
+	width: 20%;
+}
+
 #debug {
 	position:absolute;
 	right:7%;
