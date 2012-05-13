@@ -39,7 +39,8 @@
       if (!povmarker.getVisible()) {
         povmarker.setPosition(event.latLng);
         povmarker.setVisible(true);
-        return queryEphemerides(povmarker);
+        $("#step1").removeClass("active", 500);
+        return $("#step2").addClass("active", 500);
       } else if (!poimarker.getVisible()) {
         poimarker.setPosition(event.latLng);
         poimarker.setVisible(true);
@@ -47,7 +48,9 @@
           strokeOpacity: 0.6
         });
         $("#azimuth").show();
-        return queryMatch(povmarker, poimarker);
+        queryMatch(povmarker, poimarker);
+        $("#step2").removeClass("active", 500);
+        return $("#step3").addClass("active", 500);
       }
     });
     $([povmarker, poimarker]).each(function(i, marker) {

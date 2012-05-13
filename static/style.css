@@ -20,6 +20,16 @@ body {
 	text-align:center;
 }
 
+.steps {
+	text-align: left;
+	color: #999;
+}
+
+.active {
+	color: #000;
+	background-color: #F1FF87;
+}
+
 #results {
 	
 }

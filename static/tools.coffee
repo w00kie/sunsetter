@@ -43,16 +43,22 @@ $ ->
 
 	# Click on the map event - works only 2 first times
 	google.maps.event.addListener map, 'click', (event) =>
+		# First click, show POV marker
 		if not povmarker.getVisible()
 			povmarker.setPosition event.latLng
 			povmarker.setVisible true
-			queryEphemerides povmarker
+			#queryEphemerides povmarker
+			$("#step1").removeClass("active", 500)
+			$("#step2").addClass("active", 500)
+		# Second click, show POI marker
 		else if not poimarker.getVisible()
 			poimarker.setPosition event.latLng
 			poimarker.setVisible true
 			los.setOptions {strokeOpacity: 0.6}
 			$("#azimuth").show()
 			queryMatch povmarker, poimarker
+			$("#step2").removeClass("active", 500)
+			$("#step3").addClass("active", 500)
 	
 	# Move markers event
 	$([povmarker, poimarker]).each (i,marker) =>
