@@ -23,6 +23,9 @@ body {
 .steps {
 	text-align: left;
 	color: #999;
+	margin: 0;
+	padding: 1em 0 1em 1.35em;
+	text-indent: -1.35em;
 }
 
 .active {
