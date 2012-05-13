@@ -52,21 +52,21 @@ $ ->
 			poimarker.setVisible true
 			los.setOptions {strokeOpacity: 0.6}
 			$("#azimuth").show()
-			#queryAzimuthMatch(povmarker, poimarker)
+			queryMatch povmarker, poimarker
 	
 	# Move markers event
 	$([povmarker, poimarker]).each (i,marker) =>
 		google.maps.event.addListener marker, 'position_changed', () =>
 			los.setPath [povmarker.getPosition(), poimarker.getPosition()]
-			az = getAzimuth povmarker.getPosition(), poimarker.getPosition()
-			$("#azimuth").text az.round(2)+"º"
+			document.az = getAzimuth povmarker.getPosition(), poimarker.getPosition()
+			$("#azimuth").text document.az.round(2)+"º"
 	
 	
 	# Compute Azimuth between markers on drop
 	$([povmarker, poimarker]).each (i,marker) =>
 		google.maps.event.addListener marker, 'dragend', () =>
-			queryEphemerides(povmarker)
-			#queryAzimuthMatch(povmarker, poimarker);
+			#queryEphemerides(povmarker)
+			queryMatch povmarker, poimarker
 
 getAzimuth = (pov, poi) ->
 	povLat = pov.lat().toRad()
@@ -87,19 +87,16 @@ queryEphemerides = (pov) ->
 			document.ephemerides = reply
 	)
 
-queryAzimuthMatch = (pov, poi) ->
+queryMatch = (pov, poi) ->
 	povlat = pov.getPosition().lat().round(1)
-	az = getAzimuth pov.getPosition(), poi.getPosition()
 	$.ajax(
-		type: "GET"
-		url: "/findmatch/"
-		data: {lat: povlat, azimuth: az}
+		type: "POST"
+		url: "/findMatch"
+		data: {lat: povlat, az: document.az}
 		dataType: "json"
 		success: (reply) =>
-			if reply['matches'] is null
-				$("#results").text reply['suntype']+" is not visible in this direction."
-			else
-				$("#results").text reply['suntype']+": "+reply['matches']
+			document.matches = reply
+			$("#results").text("#{reply.suntype}: #{reply.matches}")
 	)
 
 document.where = () ->

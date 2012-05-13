@@ -45,16 +45,13 @@ def GetEphemerides(lat):
 		fullyear.append([sunriseaz, sunsetaz])
 	return fullyear
 
-def GetMatchingDay(lat, azimuth):
-	fullyear = []
-	for d in range(1,365):
-		sunriseaz = GetSunriseAzymuth(lat, d)
-		if (azimuth < 180):
-			suntype = "Sunrise"
-			fullyear.append(sunriseaz)
-		else:
-			suntype = "Sunset"
-			fullyear.append(360 - sunriseaz)
+def GetMatchingDay(fullyear, azimuth):
+	if (azimuth < 180):
+		suntype = "Sunrise"
+		fullyear = [sunrise for sunrise,sunset in fullyear]
+	else:
+		suntype = "Sunset"
+		fullyear = [sunset for sunrise,sunset in fullyear]
 	
 	if (azimuth < min(fullyear) or azimuth > max(fullyear)):
 		return {'suntype':suntype}

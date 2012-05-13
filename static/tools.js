@@ -1,5 +1,5 @@
 (function() {
-  var getAzimuth, queryAzimuthMatch, queryEphemerides;
+  var getAzimuth, queryEphemerides, queryMatch;
 
   $(function() {
     var latlng, los, map, myOptions, poimarker, povmarker;
@@ -46,20 +46,20 @@
         los.setOptions({
           strokeOpacity: 0.6
         });
-        return $("#azimuth").show();
+        $("#azimuth").show();
+        return queryMatch(povmarker, poimarker);
       }
     });
     $([povmarker, poimarker]).each(function(i, marker) {
       return google.maps.event.addListener(marker, 'position_changed', function() {
-        var az;
         los.setPath([povmarker.getPosition(), poimarker.getPosition()]);
-        az = getAzimuth(povmarker.getPosition(), poimarker.getPosition());
-        return $("#azimuth").text(az.round(2) + "º");
+        document.az = getAzimuth(povmarker.getPosition(), poimarker.getPosition());
+        return $("#azimuth").text(document.az.round(2) + "º");
       });
     });
     return $([povmarker, poimarker]).each(function(i, marker) {
       return google.maps.event.addListener(marker, 'dragend', function() {
-        return queryEphemerides(povmarker);
+        return queryMatch(povmarker, poimarker);
       });
     });
   });
@@ -91,25 +91,21 @@
     });
   };
 
-  queryAzimuthMatch = function(pov, poi) {
-    var az, povlat;
+  queryMatch = function(pov, poi) {
+    var povlat;
     var _this = this;
     povlat = pov.getPosition().lat().round(1);
-    az = getAzimuth(pov.getPosition(), poi.getPosition());
     return $.ajax({
-      type: "GET",
-      url: "/findmatch/",
+      type: "POST",
+      url: "/findMatch",
       data: {
         lat: povlat,
-        azimuth: az
+        az: document.az
       },
       dataType: "json",
       success: function(reply) {
-        if (reply['matches'] === null) {
-          return $("#results").text(reply['suntype'] + " is not visible in this direction.");
-        } else {
-          return $("#results").text(reply['suntype'] + ": " + reply['matches']);
-        }
+        document.matches = reply;
+        return $("#results").text("" + reply.suntype + ": " + reply.matches);
       }
     });
   };
