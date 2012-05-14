@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<head>
+	<title>{% block title %}Sunsetter - find when the sun sets over there{% endblock %}</title>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<meta name="author" content="Francois Rejete">
+	
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+	
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" media="screen" charset="utf-8">
+	{% block css %}{% endblock %}
+	
+	<!-- Additional JavaScript libraries and plugins... -->
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<script>
+		// Load jQuery
+		google.load("jquery", "1");
+		google.load("jqueryui", "1");
+	</script>
+	{% block js %}{% endblock %}
+</head>
+<body>
+	{% block main %}{% endblock %}
+</body>
+</html>

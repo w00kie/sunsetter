@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<head>
-	<title>Sunsetter - find when the sun sets over there</title>
-	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	<meta name="author" content="Francois Rejete">
-	<link rel="shortcut icon" href="/static/favicon.ico">
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" media="screen" charset="utf-8">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Page Not Found{% endblock %}
+
+{% block css %}
 	<style type="text/css">
 		body{
 			padding-top: 40px;
@@ -23,8 +19,10 @@
 			margin:15px 0;
 		}
 	</style>
+{% endblock %}
+
+{% block main %}
 	<h1>404</h1>
 	<p>That page doesn't even exist.</p>
 	<p>Why don't you just <a href="{{ url_for('index') }}">go back home</a>?</p>
-</body>
-</html>
+{% endblock %}

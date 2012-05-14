@@ -1,20 +1,11 @@
-<!DOCTYPE html>
-<head>
-	<title>Sunsetter - find when the sun sets over there</title>
-	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	<meta name="author" content="Francois Rejete">
-	<link rel="shortcut icon" href="/static/favicon.ico">
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" media="screen" charset="utf-8">
+{% extends "base.html" %}
+
+{% block js %}
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDsz9jssxKwvgEv977cDJ7mue7X6WZCbt8&sensor=true"></script>
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-	<script>
-		// Load jQuery
-		google.load("jquery", "1");
-		google.load("jqueryui", "1");
-	</script>
 	<script type="text/javascript" src="{{ url_for('static', filename='tools.js') }}"></script>
-</head>
-<body>
+{% endblock %}
+
+{% block main %}
 	<div id="menu">
 		<h1 id="title">Sunsetter</h1>
 		<p id="step1" class="steps active">1. Click on your point of view.</p>
@@ -25,5 +16,4 @@
 		<p id="credits">&copy;2012 <a href="http://francois.rejete.com">Francois Rejete</a> built this</p>
 	</div>
 	<div id="map_canvas"></div>
-</body>
-</html>
+{% endblock %}
