@@ -11,7 +11,13 @@ $ ->
 		center: latlng
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	
-	map = new google.maps.Map document.getElementById("map_canvas"), myOptions
+	map = new google.maps.Map document.getElementById("map_canvas"), myOptions	
+	
+	# Try HTML5 geolocation
+	if navigator.geolocation
+		navigator.geolocation.getCurrentPosition (position) =>
+			latlng = new google.maps.LatLng position.coords.latitude, position.coords.longitude
+			map.panTo latlng
 
 	# Initialize POV and POI Markers as well as LOS Polyline
 	povmarker = new google.maps.Marker(

@@ -15,6 +15,12 @@
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        return map.panTo(latlng);
+      });
+    }
     povmarker = new google.maps.Marker({
       position: new google.maps.LatLng(35.41, 139.44),
       map: map,
