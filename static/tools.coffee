@@ -111,10 +111,6 @@ queryMatch = (pov, poi) ->
 			$("#results").text("#{reply.suntype}: #{reply.matches}")
 	)
 
-document.where = () ->
-	if google.loader.ClientLocation
-		alert google.loader.ClientLocation.latitude+", "+google.loader.ClientLocation.longitude+"\n"+google.loader.ClientLocation.city+"\n"+google.loader.ClientLocation.country+"\n"+google.loader.ClientLocation.region
-
 # extend Number object with methods for converting degrees/radians
 Number::toRad = () ->  # convert degrees to radians
   return this * Math.PI / 180

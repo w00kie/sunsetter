@@ -119,12 +119,6 @@
     });
   };
 
-  document.where = function() {
-    if (google.loader.ClientLocation) {
-      return alert(google.loader.ClientLocation.latitude + ", " + google.loader.ClientLocation.longitude + "\n" + google.loader.ClientLocation.city + "\n" + google.loader.ClientLocation.country + "\n" + google.loader.ClientLocation.region);
-    }
-  };
-
   Number.prototype.toRad = function() {
     return this * Math.PI / 180;
   };
