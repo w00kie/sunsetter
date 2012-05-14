@@ -55,7 +55,7 @@ def findMatch():
 
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
-	"""Send your static text file."""
+	"""Send your static text file. robots.txt etc."""
 	file_dot_text = file_name + '.txt'
 	return app.send_static_file(file_dot_text)
 
