@@ -74,7 +74,7 @@ $ ->
 			$("#azimuth").text document.az.round(2)+"º"
 	
 	
-	# Compute Azimuth between markers on drop
+	# Query for a match on drop
 	$([povmarker, poimarker]).each (i,marker) =>
 		google.maps.event.addListener marker, 'dragend', () =>
 			#queryEphemerides(povmarker)
