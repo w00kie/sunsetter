@@ -23,7 +23,7 @@ $ ->
 	povmarker = new google.maps.Marker(
 		position: new google.maps.LatLng 35.41, 139.44
 		map: map
-		icon: '/static/man.png'
+		icon: '/static/img/man.png'
 		draggable: true
 		visible: false
 	)
