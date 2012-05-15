@@ -113,8 +113,19 @@
       },
       dataType: "json",
       success: function(reply) {
+        var day, daylist, _i, _len, _ref;
         document.matches = reply;
-        return $("#results").text("" + reply.suntype + ": " + reply.matches);
+        if (reply.matches != null) {
+          daylist = $("<ul>").addClass("matches");
+          _ref = reply.matches;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            day = _ref[_i];
+            daylist.append($("<li>").text(day));
+          }
+          return $("#results").text("" + reply.suntype + " on:").append(daylist);
+        } else {
+          return $("#results").text("Sorry, there is no " + reply.suntype + " in this direction.");
+        }
       }
     });
   };

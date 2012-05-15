@@ -108,7 +108,12 @@ queryMatch = (pov, poi) ->
 		dataType: "json"
 		success: (reply) =>
 			document.matches = reply
-			$("#results").text("#{reply.suntype}: #{reply.matches}")
+			if reply.matches?
+				daylist = $("<ul>").addClass("matches")
+				daylist.append($("<li>").text(day)) for day in reply.matches
+				$("#results").text("#{reply.suntype} on:").append(daylist)
+			else
+				$("#results").text("Sorry, there is no #{reply.suntype} in this direction.")
 	)
 
 # extend Number object with methods for converting degrees/radians
