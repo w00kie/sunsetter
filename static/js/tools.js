@@ -2,7 +2,7 @@
   var getAzimuth, queryEphemerides, queryMatch;
 
   $(function() {
-    var latlng, los, map, myOptions, poimarker, povmarker;
+    var latlng, los, map, markerpos, myOptions, poimarker, povmarker;
     var _this = this;
     if (google.loader.ClientLocation) {
       latlng = new google.maps.LatLng(google.loader.ClientLocation.latitude, google.loader.ClientLocation.longitude);
@@ -21,15 +21,16 @@
         return map.panTo(latlng);
       });
     }
+    markerpos = new google.maps.LatLng(1, 1);
     povmarker = new google.maps.Marker({
-      position: new google.maps.LatLng(35.41, 139.44),
+      position: markerpos,
       map: map,
       icon: '/static/img/man.png',
       draggable: true,
       visible: false
     });
     poimarker = new google.maps.Marker({
-      position: new google.maps.LatLng(35.41, 140.44),
+      position: markerpos,
       map: map,
       draggable: true,
       visible: false
@@ -63,13 +64,32 @@
       return google.maps.event.addListener(marker, 'position_changed', function() {
         los.setPath([povmarker.getPosition(), poimarker.getPosition()]);
         document.az = getAzimuth(povmarker.getPosition(), poimarker.getPosition());
-        return $("#azimuth").text(document.az.round(2) + "º");
+        $("#azimuth").text(document.az.round(2) + "º");
+        return $("#results").html("");
       });
     });
-    return $([povmarker, poimarker]).each(function(i, marker) {
+    $([povmarker, poimarker]).each(function(i, marker) {
       return google.maps.event.addListener(marker, 'dragend', function() {
         return queryMatch(povmarker, poimarker);
       });
+    });
+    return $("#reset").click(function() {
+      povmarker.setOptions({
+        position: markerpos,
+        visible: false
+      });
+      poimarker.setOptions({
+        position: markerpos,
+        visible: false
+      });
+      los.setOptions({
+        strokeOpacity: 0
+      });
+      $("#step1").addClass("active", 500);
+      $("#step2").removeClass("active", 500);
+      $("#step3").removeClass("active", 500);
+      $("#azimuth").text("");
+      return $("#results").html("");
     });
   });
 

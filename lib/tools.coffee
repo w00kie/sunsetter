@@ -18,10 +18,13 @@ $ ->
 		navigator.geolocation.getCurrentPosition (position) =>
 			latlng = new google.maps.LatLng position.coords.latitude, position.coords.longitude
 			map.panTo latlng
-
+	
+	# Default marker position
+	markerpos = new google.maps.LatLng 1, 1
+	
 	# Initialize POV and POI Markers as well as LOS Polyline
 	povmarker = new google.maps.Marker(
-		position: new google.maps.LatLng 35.41, 139.44
+		position: markerpos
 		map: map
 		icon: '/static/img/man.png'
 		draggable: true
@@ -29,7 +32,7 @@ $ ->
 	)
 	
 	poimarker = new google.maps.Marker(
-		position: new google.maps.LatLng 35.41, 140.44
+		position: markerpos
 		map: map
 		draggable: true
 		visible: false
@@ -72,6 +75,8 @@ $ ->
 			los.setPath [povmarker.getPosition(), poimarker.getPosition()]
 			document.az = getAzimuth povmarker.getPosition(), poimarker.getPosition()
 			$("#azimuth").text document.az.round(2)+"º"
+			# Clear results
+			$("#results").html("")
 	
 	
 	# Query for a match on drop
@@ -79,6 +84,17 @@ $ ->
 		google.maps.event.addListener marker, 'dragend', () =>
 			#queryEphemerides(povmarker)
 			queryMatch povmarker, poimarker
+	
+	# Reset button action
+	$("#reset").click () ->
+		povmarker.setOptions {position: markerpos, visible: false}
+		poimarker.setOptions {position: markerpos, visible: false}
+		los.setOptions {strokeOpacity: 0}
+		$("#step1").addClass("active", 500)
+		$("#step2").removeClass("active", 500)
+		$("#step3").removeClass("active", 500)
+		$("#azimuth").text("")
+		$("#results").html("")
 
 getAzimuth = (pov, poi) ->
 	povLat = pov.lat().toRad()

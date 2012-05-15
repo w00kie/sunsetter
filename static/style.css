@@ -49,8 +49,8 @@ body {
 	width: 20%;
 }
 
-#debug {
+.reset {
 	position:absolute;
-	right:7%;
-	bottom:10px;
+	bottom:1.5em;
+	width: 20%;
 }
