@@ -9,15 +9,12 @@ body {
 	padding: 0;
 }
 
-#container {
-	width:100%;
-	height:100%;
-}
-
 #menu {
-	float:right;
-	width:20%;
-	text-align:center;
+	position: fixed;
+	right: 0;
+	width: 20%;
+	height: 100%;
+	text-align: center;
 }
 
 .steps {
@@ -46,11 +43,11 @@ body {
 	position: absolute;
 	bottom: 0.5em;
 	font-size: 0.6em;
-	width: 20%;
+	width: 100%;
 }
 
 .reset {
 	position:absolute;
 	bottom:1.5em;
-	width: 20%;
+	width: 100%;
 }

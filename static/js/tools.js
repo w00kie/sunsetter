@@ -123,6 +123,22 @@
   queryMatch = function(pov, poi) {
     var povlat;
     var _this = this;
+    document.spinner = new Spinner({
+      lines: 13,
+      length: 7,
+      width: 4,
+      radius: 10,
+      rotate: 0,
+      color: '#333',
+      speed: 1,
+      trail: 60,
+      shadow: false,
+      hwaccel: true,
+      className: 'spinner',
+      zIndex: 2e9,
+      top: 'auto',
+      left: 'auto'
+    }).spin($("#menu")[0]);
     povlat = pov.getPosition().lat().round(1);
     return $.ajax({
       type: "POST",
@@ -134,7 +150,6 @@
       dataType: "json",
       success: function(reply) {
         var day, daylist, _i, _len, _ref;
-        document.matches = reply;
         if (reply.matches != null) {
           daylist = $("<ul>").addClass("matches");
           _ref = reply.matches;
@@ -146,6 +161,12 @@
         } else {
           return $("#results").text("Sorry, there is no " + reply.suntype + " in this direction.");
         }
+      },
+      error: function() {
+        return $("#results").text("ERROR in the Request.");
+      },
+      complete: function() {
+        return document.spinner.stop();
       }
     });
   };

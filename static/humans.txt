@@ -10,6 +10,7 @@
 
 /* THANKS */
   Names (& URL): pysolar (http://pysolar.org/)
+				spin.js (http://fgnass.github.com/spin.js/)
 
 /* SITE */
   Standards: HTML5, CSS3

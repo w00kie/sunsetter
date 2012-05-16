@@ -96,6 +96,7 @@ $ ->
 		$("#azimuth").text("")
 		$("#results").html("")
 
+
 getAzimuth = (pov, poi) ->
 	povLat = pov.lat().toRad()
 	poiLat = poi.lat().toRad()
@@ -116,6 +117,24 @@ queryEphemerides = (pov) ->
 	)
 
 queryMatch = (pov, poi) ->
+	# Set the spinner
+	document.spinner = new Spinner(
+		lines: 13 # The number of lines to draw
+		length: 7 # The length of each line
+		width: 4 # The line thickness
+		radius: 10 # The radius of the inner circle
+		rotate: 0 # The rotation offset
+		color: '#333' # #rgb or #rrggbb
+		speed: 1 # Rounds per second
+		trail: 60 # Afterglow percentage
+		shadow: false # Whether to render a shadow
+		hwaccel: true # Whether to use hardware acceleration
+		className: 'spinner' # The CSS class to assign to the spinner
+		zIndex: 2e9 # The z-index (defaults to 2000000000)
+		top: 'auto' # Top position relative to parent in px
+		left: 'auto' # Left position relative to parent in px
+	).spin($("#menu")[0])
+	
 	povlat = pov.getPosition().lat().round(1)
 	$.ajax(
 		type: "POST"
@@ -123,13 +142,16 @@ queryMatch = (pov, poi) ->
 		data: {lat: povlat, az: document.az}
 		dataType: "json"
 		success: (reply) =>
-			document.matches = reply
 			if reply.matches?
 				daylist = $("<ul>").addClass("matches")
 				daylist.append($("<li>").text(day)) for day in reply.matches
 				$("#results").text("#{reply.suntype} on:").append(daylist)
 			else
 				$("#results").text("Sorry, there is no #{reply.suntype} in this direction.")
+		error: () =>
+			$("#results").text("ERROR in the Request.")
+		complete: () =>
+			document.spinner.stop()
 	)
 
 # extend Number object with methods for converting degrees/radians
