@@ -135,6 +135,9 @@ queryMatch = (pov, poi) ->
 		left: 'auto' # Left position relative to parent in px
 	).spin($("#menu")[0])
 	
+	# Log a request to Google Analytics
+	_gaq.push ['_trackEvent', 'Interaction', 'Request']
+	
 	povlat = pov.getPosition().lat().round(1)
 	$.ajax(
 		type: "POST"
@@ -146,10 +149,16 @@ queryMatch = (pov, poi) ->
 				daylist = $("<ul>").addClass("matches")
 				daylist.append($("<li>").text(day)) for day in reply.matches
 				$("#results").text("#{reply.suntype} on:").append(daylist)
+				# Log the result to Google Analytics
+				_gaq.push ['_trackEvent', 'Interaction', 'Success', reply.suntype]
 			else
 				$("#results").text("Sorry, there is no #{reply.suntype} in this direction.")
+				# Log the result to Google Analytics
+				_gaq.push ['_trackEvent', 'Interaction', 'Success', 'Out of Bounds']
 		error: () =>
 			$("#results").text("ERROR in the Request.")
+			# Log the error to Google Analytics
+			_gaq.push ['_trackEvent', 'Interaction', 'Error']
 		complete: () =>
 			document.spinner.stop()
 	)

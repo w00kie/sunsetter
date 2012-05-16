@@ -139,6 +139,7 @@
       top: 'auto',
       left: 'auto'
     }).spin($("#menu")[0]);
+    _gaq.push(['_trackEvent', 'Interaction', 'Request']);
     povlat = pov.getPosition().lat().round(1);
     return $.ajax({
       type: "POST",
@@ -157,13 +158,16 @@
             day = _ref[_i];
             daylist.append($("<li>").text(day));
           }
-          return $("#results").text("" + reply.suntype + " on:").append(daylist);
+          $("#results").text("" + reply.suntype + " on:").append(daylist);
+          return _gaq.push(['_trackEvent', 'Interaction', 'Success', reply.suntype]);
         } else {
-          return $("#results").text("Sorry, there is no " + reply.suntype + " in this direction.");
+          $("#results").text("Sorry, there is no " + reply.suntype + " in this direction.");
+          return _gaq.push(['_trackEvent', 'Interaction', 'Success', 'Out of Bounds']);
         }
       },
       error: function() {
-        return $("#results").text("ERROR in the Request.");
+        $("#results").text("ERROR in the Request.");
+        return _gaq.push(['_trackEvent', 'Interaction', 'Error']);
       },
       complete: function() {
         return document.spinner.stop();
