@@ -48,11 +48,15 @@ def findMatch():
 	lat = request.form['lat'].encode('ascii','ignore')
 	az = float(request.form['az'])
 	# Get the fullyear calc from the cache
-	if lat in mc:
-		fullyear = mc.get(lat)
-	else:
+	try:
+		if lat in mc:
+			fullyear = mc.get(lat)
+		else:
+			fullyear = sunazymuth.GetEphemerides(float(lat))
+			mc.set(lat, fullyear)
+	except pylibmc.Error as e:
+		app.log_exception(e)
 		fullyear = sunazymuth.GetEphemerides(float(lat))
-		mc.set(lat, fullyear)
 	return json.dumps(sunazymuth.GetMatchingDay(fullyear,az))
 
 ###
