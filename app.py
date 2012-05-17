@@ -1,4 +1,4 @@
-import os
+import sys, os
 import json
 import pylibmc
 
@@ -11,6 +11,12 @@ app = Flask(__name__)
 
 # Check if we are on local development machine (default is prod)
 DEVELOPMENT = os.environ.get('DEVELOPMENT','FALSE')
+
+# Logging setup
+import logging
+log_handler = logging.StreamHandler(sys.stdout)
+log_handler.setLevel(logging.WARNING)
+app.logger.addHandler(log_handler)
 
 # Connect to memcache with config from environment variables.
 if DEVELOPMENT == 'TRUE':
@@ -78,5 +84,5 @@ def page_not_found(error):
 if __name__ == '__main__':
 	#Bind to PORT if defined, otherwise default to 5000.
 	port = int(os.environ.get('PORT', 5000))
-	debug = os.environ.get('DEBUG', True)
+	debug = os.environ.get('DEBUG', False)
 	app.run(host='0.0.0.0', port=port, debug=debug)
