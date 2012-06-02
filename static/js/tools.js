@@ -109,7 +109,7 @@
     povlat = pov.getPosition().lat().round(1);
     return $.ajax({
       type: "POST",
-      url: "/getEphemerides",
+      url: "/GetEphemerides",
       data: {
         lat: povlat
       },

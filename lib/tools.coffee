@@ -105,11 +105,12 @@ getAzimuth = (pov, poi) ->
 	x = Math.cos(povLat) * Math.sin(poiLat) - Math.sin(povLat) * Math.cos(poiLat) * Math.cos(dLon)
 	return Math.atan2(y, x).toBrng()
 
+# NOT USED
 queryEphemerides = (pov) ->
 	povlat = pov.getPosition().lat().round(1)
 	$.ajax(
 		type: "POST"
-		url: "/getEphemerides"
+		url: "/GetEphemerides"
 		data: {lat: povlat}
 		dataType: "json"
 		success: (reply) =>

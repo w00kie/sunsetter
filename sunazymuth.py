@@ -4,6 +4,7 @@ import math
 import datetime
 from pysolar import solar
 
+# Closest matching value from a collection
 def closest(target, collection) :
     return min((abs(target - i), i) for i in collection)[1]
 
@@ -37,6 +38,7 @@ def GetSunsetTime(lat, longitude, day):
 	minutes = 720 + 4*(-longitude + GetSunriseHourAngle(lat, utc_datetime)) - solar.EquationOfTime(day)
 	return "%i:%i" % (minutes/60, minutes%60)
 	
+# Get sunset and sunrise azymuth for the whole year
 def GetEphemerides(lat):
 	fullyear = []
 	for d in range(1,365):
@@ -45,7 +47,9 @@ def GetEphemerides(lat):
 		fullyear.append([sunriseaz, sunsetaz])
 	return fullyear
 
+# Find 2 matches to the given azymuth in a full year ephemerides list
 def GetMatchingDay(fullyear, azimuth):
+	# Keep just the sunset or sunrise depending on the given azymuth
 	if (azimuth < 180):
 		suntype = "Sunrise"
 		fullyear = [sunrise for sunrise,sunset in fullyear]
@@ -53,6 +57,7 @@ def GetMatchingDay(fullyear, azimuth):
 		suntype = "Sunset"
 		fullyear = [sunset for sunrise,sunset in fullyear]
 	
+	# If azymuth is out of bound, just return the suntype, no matching
 	if (azimuth < min(fullyear) or azimuth > max(fullyear)):
 		return {'suntype':suntype}
 	
@@ -62,9 +67,11 @@ def GetMatchingDay(fullyear, azimuth):
 	fallclosest = closest(azimuth, fullyear[summersolstice:wintersolstice])
 	springclosest = closest(azimuth, fullyear[wintersolstice:] + fullyear[:summersolstice])
 	
+	# Format the day of year to a readable date
 	matches = [GetDateFromDay(fullyear.index(springclosest)), GetDateFromDay(fullyear.index(fallclosest))]
 	return ({'suntype':suntype, 'matches':matches})
 
+# Format the day of year to something like "January 23"
 def GetDateFromDay (day):
 	today = datetime.date.today()
 	thisyear = datetime.date(today.year, 1, 1)
@@ -72,6 +79,9 @@ def GetDateFromDay (day):
 	d = thisyear + delta
 	return d.strftime("%B %d")
 
+#####
+# DEBUG STUFF
+#####
 # print GetMatchingDay(35.8,99)
 
 # d = datetime.datetime.utcnow()

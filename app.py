@@ -32,15 +32,22 @@ else:
 	    binary=True
 	)
 
+# Route for INDEX
 @app.route('/')
 def index():
 	return render_template('index.html')
 	
+# Output a list of sunset and sunrise azymuth for the whole year
+# NOT USED NOW
 @app.route('/getEphemerides', methods=['POST'])
 def getEphemerides():
 	lat = float(request.form['lat'])
 	return json.dumps(sunazymuth.GetEphemerides(lat))
 
+# Find 2 days matching the given azymuth
+# Returns in JSON:
+#	- suntype = either "sunrise" or "sunset"
+#	- matches = array of 2 matching days, nothing if azymuth is out of bounds
 @app.route('/findMatch', methods=['POST'])
 def findMatch():
 	global mc
@@ -55,6 +62,7 @@ def findMatch():
 			fullyear = sunazymuth.GetEphemerides(float(lat))
 			mc.set(lat, fullyear)
 	except pylibmc.Error as e:
+		# If cache error, log the exception and compute the result anyway
 		app.log_exception(e)
 		fullyear = sunazymuth.GetEphemerides(float(lat))
 	return json.dumps(sunazymuth.GetMatchingDay(fullyear,az))
