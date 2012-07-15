@@ -12,7 +12,7 @@ def GetSunriseAzymuth(lat, day):
 	# day = solar.GetDayOfYear(utc_datetime)
 	decl = math.radians(solar.GetDeclination(day))
 	lat_rad = math.radians(lat)
-	zenith_rad = math.radians(90.833)
+	zenith_rad = math.radians(89.75)
 	
 	first_term = math.sin(lat_rad)*math.cos(zenith_rad)-math.sin(decl)
 	second_term = math.cos(lat_rad)*math.sin(zenith_rad)
@@ -22,7 +22,7 @@ def GetSunriseHourAngle(lat, day):
 	# day = solar.GetDayOfYear(utc_datetime)
 	decl = math.radians(solar.GetDeclination(day))
 	lat_rad = math.radians(lat)
-	zenith_rad = math.radians(90.833)
+	zenith_rad = math.radians(89.75)
 	
 	first_term = math.cos(zenith_rad)/(math.cos(lat_rad)*math.cos(decl))
 	second_term = math.tan(lat_rad)*math.tan(decl)
