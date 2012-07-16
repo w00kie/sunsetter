@@ -4,6 +4,14 @@ import math
 import datetime
 from pysolar import solar
 
+# Zenith angle of different phases of sunset
+FULL_SUN = 89.75		# Lower limb touches horizon
+HALF_SUN = 90			# Center of sun on horizon
+CIVIL_SUNRISE = 90.833	# Top of sun appears over horizon (corrected for refraction)
+
+# Setting used for application
+SUNRISE_TYPE = FULL_SUN
+
 # Closest matching value from a collection
 def closest(target, collection) :
     return min((abs(target - i), i) for i in collection)[1]
@@ -12,7 +20,7 @@ def GetSunriseAzymuth(lat, day):
 	# day = solar.GetDayOfYear(utc_datetime)
 	decl = math.radians(solar.GetDeclination(day))
 	lat_rad = math.radians(lat)
-	zenith_rad = math.radians(89.75)
+	zenith_rad = math.radians(SUNRISE_TYPE)
 	
 	first_term = math.sin(lat_rad)*math.cos(zenith_rad)-math.sin(decl)
 	second_term = math.cos(lat_rad)*math.sin(zenith_rad)
@@ -22,7 +30,7 @@ def GetSunriseHourAngle(lat, day):
 	# day = solar.GetDayOfYear(utc_datetime)
 	decl = math.radians(solar.GetDeclination(day))
 	lat_rad = math.radians(lat)
-	zenith_rad = math.radians(89.75)
+	zenith_rad = math.radians(SUNRISE_TYPE)
 	
 	first_term = math.cos(zenith_rad)/(math.cos(lat_rad)*math.cos(decl))
 	second_term = math.tan(lat_rad)*math.tan(decl)
