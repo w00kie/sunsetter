@@ -4,10 +4,21 @@ What is this?
 
 It is based on the brilliant [pysolar](http://pysolar.org/) library for the hardcore astronomical calculations. It also uses [spin.js](http://fgnass.github.com/spin.js/) for a cool Ajax spinner without any GIF.
 
+**Note:** the app is configured to predict when the sun's _lower limb_ touches the horizon, not the _civil sunset_ when the sun completely disappears behind the horizon, as this makes for a better picture.
+
 How to run it on my machine?
 ============================
-If you want to download it and run it on your own machine you must add one environment variable to plug to local memcached without auth. Add the following to a `.env` file in the root folder:
+If you want to download it and run it on your own machine you must first install `venv` in the same folder and activate it:
+
+    virtualenv venv --distribute
+    source venv/bin/activate
+
+This should change your prompt to include a `(venv)` prefix. Then install the pre-requirements with this command:
+
+    pip install -r requirements.txt
+
+Finally you need to add one environment variable to plug to local memcached without auth. Add the following to a `.env` file in the root folder:
 
     DEVELOPMENT=TRUE
 
-You can then run locally with `foreman start -f Procfile.dev` which will start the python app as well as memcached and a coffee compiler to compile any changes to the javascript on the fly.
+You can then run locally with `foreman start -f Procfile.dev` which will start the python app as well as memcached and a coffee compiler to compile any changes to the javascript on the fly. Connect to the app in your browser on http://localhost:5000
