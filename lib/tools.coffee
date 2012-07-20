@@ -11,13 +11,7 @@ $ ->
 		center: latlng
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	
-	map = new google.maps.Map document.getElementById("map_canvas"), myOptions	
-	
-	# Try HTML5 geolocation
-	if navigator.geolocation
-		navigator.geolocation.getCurrentPosition (position) =>
-			latlng = new google.maps.LatLng position.coords.latitude, position.coords.longitude
-			map.panTo latlng
+	map = new google.maps.Map document.getElementById("map_canvas"), myOptions
 	
 	# Default marker position
 	markerpos = new google.maps.LatLng 1, 1
@@ -78,7 +72,6 @@ $ ->
 			# Clear results
 			$("#results").html("")
 	
-	
 	# Query for a match on drop
 	$([povmarker, poimarker]).each (i,marker) =>
 		google.maps.event.addListener marker, 'dragend', () =>
@@ -95,6 +88,39 @@ $ ->
 		$("#step3").removeClass("active", 500)
 		$("#azimuth").text("")
 		$("#results").html("")
+	
+	# Setup map if vars passed in URL hash
+	hash = getHash()
+	if "pov" in Object.keys(hash) and "poi" in Object.keys(hash)
+		# Parse locations from URL
+		povpos = strToLatLng hash.pov
+		poipos = strToLatLng hash.poi
+		# Move markers to locations
+		povmarker.setPosition povpos
+		poimarker.setPosition poipos
+		# Make elements visible
+		povmarker.setVisible true
+		poimarker.setVisible true
+		los.setOptions {strokeOpacity: 0.6}
+		# Zoom map to fit both markers
+		bounds = new google.maps.LatLngBounds()
+		bounds.extend povpos
+		bounds.extend poipos
+		#map.panTo bounds.getCenter()
+		map.fitBounds bounds
+		# Increment instruction steps
+		$("#step1").removeClass("active", 500)
+		$("#step3").addClass("active", 500)
+		$("#azimuth").show()
+		# Finally call the backend
+		queryMatch povmarker, poimarker
+	else	
+		# Try HTML5 geolocation
+		# Do it only if no location in URL as asynchronous geoloc messes with fitBounds
+		if navigator.geolocation
+			navigator.geolocation.getCurrentPosition (position) =>
+				latlng = new google.maps.LatLng position.coords.latitude, position.coords.longitude
+				map.panTo latlng
 
 
 getAzimuth = (pov, poi) ->
@@ -104,6 +130,25 @@ getAzimuth = (pov, poi) ->
 	y = Math.sin(dLon) * Math.cos(poiLat)
 	x = Math.cos(povLat) * Math.sin(poiLat) - Math.sin(povLat) * Math.cos(poiLat) * Math.cos(dLon)
 	return Math.atan2(y, x).toBrng()
+
+# Sets the marker positions in the URL
+setHash = (pov, poi) ->
+	povpos = pov.getPosition().toUrlValue()
+	poipos = poi.getPosition().toUrlValue()
+	window.location.hash = "pov=#{povpos}&poi=#{poipos}"
+
+# Decode paramenters from hash
+# shamelessly stolen from http://papermashup.com/read-url-get-variables-withjavascript/
+getHash = () ->
+	vars = {}
+	window.location.hash.replace /[#&]+([^=&]+)=([^&]*)/gi, (m, key, value) =>
+		vars[key] = value
+	return vars
+
+# Make a Google Maps LatLng object from a string
+strToLatLng = (str) ->
+	coord = str.split(",")
+	new google.maps.LatLng coord[0], coord[1]
 
 # NOT USED
 queryEphemerides = (pov) ->
@@ -162,6 +207,7 @@ queryMatch = (pov, poi) ->
 			_gaq.push ['_trackEvent', 'Interaction', 'Error']
 		complete: () =>
 			document.spinner.stop()
+			setHash pov, poi
 	)
 
 # extend Number object with methods for converting degrees/radians

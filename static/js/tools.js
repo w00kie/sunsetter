@@ -1,8 +1,9 @@
 (function() {
-  var getAzimuth, queryEphemerides, queryMatch;
+  var getAzimuth, getHash, queryEphemerides, queryMatch, setHash, strToLatLng;
+  var __hasProp = Object.prototype.hasOwnProperty, __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (__hasProp.call(this, i) && this[i] === item) return i; } return -1; };
 
   $(function() {
-    var latlng, los, map, markerpos, myOptions, poimarker, povmarker;
+    var bounds, hash, latlng, los, map, markerpos, myOptions, poimarker, poipos, povmarker, povpos;
     var _this = this;
     if (google.loader.ClientLocation) {
       latlng = new google.maps.LatLng(google.loader.ClientLocation.latitude, google.loader.ClientLocation.longitude);
@@ -15,12 +16,6 @@
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        return map.panTo(latlng);
-      });
-    }
     markerpos = new google.maps.LatLng(1, 1);
     povmarker = new google.maps.Marker({
       position: markerpos,
@@ -73,7 +68,7 @@
         return queryMatch(povmarker, poimarker);
       });
     });
-    return $("#reset").click(function() {
+    $("#reset").click(function() {
       povmarker.setOptions({
         position: markerpos,
         visible: false
@@ -91,6 +86,33 @@
       $("#azimuth").text("");
       return $("#results").html("");
     });
+    hash = getHash();
+    if (__indexOf.call(Object.keys(hash), "pov") >= 0 && __indexOf.call(Object.keys(hash), "poi") >= 0) {
+      povpos = strToLatLng(hash.pov);
+      poipos = strToLatLng(hash.poi);
+      povmarker.setPosition(povpos);
+      poimarker.setPosition(poipos);
+      povmarker.setVisible(true);
+      poimarker.setVisible(true);
+      los.setOptions({
+        strokeOpacity: 0.6
+      });
+      bounds = new google.maps.LatLngBounds();
+      bounds.extend(povpos);
+      bounds.extend(poipos);
+      map.fitBounds(bounds);
+      $("#step1").removeClass("active", 500);
+      $("#step3").addClass("active", 500);
+      $("#azimuth").show();
+      return queryMatch(povmarker, poimarker);
+    } else {
+      if (navigator.geolocation) {
+        return navigator.geolocation.getCurrentPosition(function(position) {
+          latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          return map.panTo(latlng);
+        });
+      }
+    }
   });
 
   getAzimuth = function(pov, poi) {
@@ -101,6 +123,29 @@
     y = Math.sin(dLon) * Math.cos(poiLat);
     x = Math.cos(povLat) * Math.sin(poiLat) - Math.sin(povLat) * Math.cos(poiLat) * Math.cos(dLon);
     return Math.atan2(y, x).toBrng();
+  };
+
+  setHash = function(pov, poi) {
+    var poipos, povpos;
+    povpos = pov.getPosition().toUrlValue();
+    poipos = poi.getPosition().toUrlValue();
+    return window.location.hash = "pov=" + povpos + "&poi=" + poipos;
+  };
+
+  getHash = function() {
+    var vars;
+    var _this = this;
+    vars = {};
+    window.location.hash.replace(/[#&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
+      return vars[key] = value;
+    });
+    return vars;
+  };
+
+  strToLatLng = function(str) {
+    var coord;
+    coord = str.split(",");
+    return new google.maps.LatLng(coord[0], coord[1]);
   };
 
   queryEphemerides = function(pov) {
@@ -170,7 +215,8 @@
         return _gaq.push(['_trackEvent', 'Interaction', 'Error']);
       },
       complete: function() {
-        return document.spinner.stop();
+        document.spinner.stop();
+        return setHash(pov, poi);
       }
     });
   };
