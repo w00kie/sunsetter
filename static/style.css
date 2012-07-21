@@ -17,6 +17,10 @@ body {
 	text-align: center;
 }
 
+.description {
+	font-size: 0.6em;
+}
+
 .steps {
 	text-align: left;
 	color: #999;
