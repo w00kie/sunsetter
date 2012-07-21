@@ -2,11 +2,12 @@
 <head>
 	<title>{% block title %}Sunsetter - find when the sun sets over there{% endblock %}</title>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	<meta name="author" content="Francois Rejete">
+	<meta name="author" content="Francois Rejete" />
+	<meta name="description" content="An application to find out when the sun sets or rises in a particular direction from a specified location." />
 	
-	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}" />
 	
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" media="screen" charset="utf-8">
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" media="screen" charset="utf-8" />
 	{% block css %}{% endblock %}
 	
 	<!-- Additional JavaScript libraries and plugins... -->
