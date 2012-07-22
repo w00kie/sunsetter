@@ -3,7 +3,7 @@ $ ->
 	# If geolocated, set current position as center
 	if google.loader.ClientLocation
 		latlng = new google.maps.LatLng google.loader.ClientLocation.latitude, google.loader.ClientLocation.longitude
-	else	#Else center in Tokyo
+	else	# Else center in Tokyo
 		latlng = new google.maps.LatLng(35.41, 139.44)
 	
 	myOptions =
@@ -137,7 +137,7 @@ setHash = (pov, poi) ->
 	poipos = poi.getPosition().toUrlValue()
 	window.location.hash = "pov=#{povpos}&poi=#{poipos}"
 
-# Decode paramenters from hash
+# Decode parameters from hash
 # shamelessly stolen from http://papermashup.com/read-url-get-variables-withjavascript/
 getHash = () ->
 	vars = {}
@@ -212,13 +212,13 @@ queryMatch = (pov, poi) ->
 
 # extend Number object with methods for converting degrees/radians
 Number::toRad = () ->  # convert degrees to radians
-  return this * Math.PI / 180
+	return this * Math.PI / 180
 
 Number::toDeg = () ->  # convert radians to degrees (signed)
-  return this * 180 / Math.PI
+	return this * 180 / Math.PI
 
 Number::toBrng = () ->  # convert radians to degrees (as bearing: 0...360)
-  return (this.toDeg()+360) % 360
+	return (this.toDeg()+360) % 360
 
 Number::round = (decimals) ->
 	return Math.round(this * Math.pow(10, decimals)) / Math.pow(10, decimals)
