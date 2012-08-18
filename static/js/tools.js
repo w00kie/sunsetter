@@ -84,8 +84,9 @@
       $("#step1").addClass("active", 500);
       $("#step2").removeClass("active", 500);
       $("#step3").removeClass("active", 500);
-      $("#azimuth").text("");
-      return $("#results").html("");
+      $("#azimuth").hide();
+      $("#results").html("");
+      return window.location.hash = "";
     });
     hash = getHash();
     if (__indexOf.call(Object.keys(hash), "pov") >= 0 && __indexOf.call(Object.keys(hash), "poi") >= 0) {
@@ -184,7 +185,7 @@
       zIndex: 2e9,
       top: 'auto',
       left: 'auto'
-    }).spin($("#menu")[0]);
+    }).spin($("#results")[0]);
     _gaq.push(['_trackEvent', 'Interaction', 'Request']);
     povlat = pov.getPosition().lat().round(1);
     return $.ajax({

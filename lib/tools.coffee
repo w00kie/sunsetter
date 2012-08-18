@@ -86,8 +86,9 @@ $ ->
 		$("#step1").addClass("active", 500)
 		$("#step2").removeClass("active", 500)
 		$("#step3").removeClass("active", 500)
-		$("#azimuth").text("")
+		$("#azimuth").hide()
 		$("#results").html("")
+		window.location.hash = ""
 	
 	# Setup map if vars passed in URL hash
 	hash = getHash()
@@ -179,7 +180,7 @@ queryMatch = (pov, poi) ->
 		zIndex: 2e9 # The z-index (defaults to 2000000000)
 		top: 'auto' # Top position relative to parent in px
 		left: 'auto' # Left position relative to parent in px
-	).spin($("#menu")[0])
+	).spin($("#results")[0])
 	
 	# Log a request to Google Analytics
 	_gaq.push ['_trackEvent', 'Interaction', 'Request']
@@ -192,8 +193,10 @@ queryMatch = (pov, poi) ->
 		dataType: "json"
 		success: (reply) =>
 			if reply.matches?
+				# Create HTML for the result days list
 				daylist = $("<ul>").addClass("matches")
 				daylist.append($("<li>").text(day)) for day in reply.matches
+				# Write the type (sunrise or sunset) and results to the screen
 				$("#results").text("#{reply.suntype} on:").append(daylist)
 				# Log the result to Google Analytics
 				_gaq.push ['_trackEvent', 'Interaction', 'Success', reply.suntype]
