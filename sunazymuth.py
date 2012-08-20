@@ -2,7 +2,7 @@
 
 import math
 import datetime
-from pysolar import solar
+from Pysolar import solar
 
 # Zenith angle of different phases of sunset
 FULL_SUN = 89.75		# Lower limb touches horizon
