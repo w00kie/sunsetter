@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block js %}
-	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDsz9jssxKwvgEv977cDJ7mue7X6WZCbt8&sensor=true"></script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key={{ MAPS_API }}&sensor=true"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='js/spin.min.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='js/tools.js') }}"></script>
 {% endblock %}

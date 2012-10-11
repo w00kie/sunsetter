@@ -21,4 +21,9 @@ Finally you need to add one environment variable to plug to local memcached with
 
     DEVELOPMENT=TRUE
 
+And variables for API Keys:
+
+	ANALYTICS=UA-XXXXXX-1
+	MAPS_API=123456789qwertyuiop
+
 You can then run locally with `foreman start -f Procfile.dev` which will start the python app as well as memcached and a coffee compiler to compile any changes to the javascript on the fly. Connect to the app in your browser on http://localhost:5000

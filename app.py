@@ -35,7 +35,11 @@ else:
 # Route for INDEX
 @app.route('/')
 def index():
-	return render_template('index.html')
+	return render_template(
+		'index.html',
+		ANALYTICS=os.environ.get('ANALYTICS','UA-XXXXXX-1'),
+		MAPS_API=os.environ.get('MAPS_API','123456789')
+	)
 	
 # Output a list of sunset and sunrise azymuth for the whole year
 # NOT USED NOW
