@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import math
-import datetime
+import datetime, time
 from Pysolar import solar
 
 # Zenith angle of different phases of sunset
@@ -36,15 +36,23 @@ def GetSunriseHourAngle(lat, day):
 	second_term = math.tan(lat_rad)*math.tan(decl)
 	return math.degrees(math.acos(first_term - second_term))
 
+# Return timestamp for UTC time of Sunrise
 def GetSunriseTime(lat, longitude, day):
 	# day = solar.GetDayOfYear(utc_datetime)
-	minutes = 720 + 4*(-longitude - GetSunriseHourAngle(lat, utc_datetime)) - solar.EquationOfTime(day)
-	return "%i:%i" % (minutes/60, minutes%60)
+	# get minutes from UTC midnight
+	minutes = 720 + 4*(-longitude - GetSunriseHourAngle(lat, day)) - solar.EquationOfTime(day)
+	# calculate the UTC time of sunrise
+	sunrise = GetUTCMidnight(day) + datetime.timedelta(minutes=minutes)
+	return GetTimestamp(sunrise)
 
+# Return timestamp for UTC time of Sunset
 def GetSunsetTime(lat, longitude, day):
 	# day = solar.GetDayOfYear(utc_datetime)
-	minutes = 720 + 4*(-longitude + GetSunriseHourAngle(lat, utc_datetime)) - solar.EquationOfTime(day)
-	return "%i:%i" % (minutes/60, minutes%60)
+	# get minutes from UTC midnight
+	minutes = 720 + 4*(-longitude + GetSunriseHourAngle(lat, day)) - solar.EquationOfTime(day)
+	# calculate the UTC time of sunset
+	sunset = GetUTCMidnight(day) + datetime.timedelta(minutes=minutes)
+	return GetTimestamp(sunset)
 	
 # Get sunset and sunrise azymuth for the whole year
 def GetEphemerides(lat):
@@ -86,6 +94,15 @@ def GetDateFromDay (day):
 	delta = datetime.timedelta(days=day-1)
 	d = thisyear + delta
 	return d.strftime("%B %d")
+
+# Returns UTC midnight datetime object from day of year
+def GetUTCMidnight(day):
+	timestr = "%s %s" % (datetime.datetime.now().year, day)
+	return datetime.datetime.strptime(timestr, "%Y %j")
+
+# Return POSIX timestamp from datetime object
+def GetTimestamp(dt):
+	return time.mktime(dt.timetuple())
 
 #####
 # DEBUG STUFF
