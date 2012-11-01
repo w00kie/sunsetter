@@ -4,5 +4,6 @@ Pysolar==0.5
 Werkzeug==0.8.3
 distribute==0.6.30
 gunicorn==0.15.0
+newrelic==1.6.0.13
 pylibmc==1.2.3
 pytz==2012h
