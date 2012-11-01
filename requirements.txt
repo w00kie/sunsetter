@@ -1,9 +1,8 @@
-Flask==0.8
+Flask==0.9
 Jinja2==2.6
 Pysolar==0.5
 Werkzeug==0.8.3
-distribute==0.6.24
-gunicorn==0.14.2
+distribute==0.6.30
+gunicorn==0.15.0
 pylibmc==1.2.3
-pytz==2012f
-wsgiref==0.1.2
+pytz==2012h
