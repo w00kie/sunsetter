@@ -1,22 +1,30 @@
 import sys, os
 import json
 import pylibmc
+from urlparse import urlparse, urlunparse
 
 import sunazymuth
 
 from flask import Flask
 from flask import request
 from flask import render_template
+from flask import redirect
 app = Flask(__name__)
 
-# Check if we are on local development machine (default is prod)
-DEVELOPMENT = os.environ.get('DEVELOPMENT','FALSE')
+
+
+###
+# APP ENVIRONMENT SETUP
+###
 
 # Logging setup
 import logging
 log_handler = logging.StreamHandler(sys.stdout)
 log_handler.setLevel(logging.WARNING)
 app.logger.addHandler(log_handler)
+
+# Check if we are on local development machine (default is prod)
+DEVELOPMENT = os.environ.get('DEVELOPMENT','FALSE')
 
 # Connect to memcache with config from environment variables.
 if DEVELOPMENT == 'TRUE':
@@ -31,6 +39,21 @@ else:
 	    password=os.environ.get('MEMCACHE_PASSWORD',''),
 	    binary=True
 	)
+
+# Redirect herokuapp to custom domain
+@app.before_request
+def redirect_domain():
+	urlparts = urlparse(request.url)
+	if urlparts.netloc == 'sunsetter.herokuapp.com':
+		urlparts_list = list(urlparts)
+		urlparts_list[1] = 'www.sunset.io'
+		return redirect(urlunparse(urlparts_list), code=301)
+
+
+
+###
+# APP WEB REQUEST HANDLERS
+###
 
 # Route for INDEX
 @app.route('/')
@@ -71,6 +94,8 @@ def findMatch():
 		fullyear = sunazymuth.GetEphemerides(float(lat))
 	return json.dumps(sunazymuth.GetMatchingDay(fullyear,az))
 
+
+
 ###
 # Boiler-plate stuff from github/flask_heroku
 ###
@@ -96,6 +121,11 @@ def page_not_found(error):
 	"""Custom 404 page."""
 	return render_template('404.html'), 404
 
+
+
+###
+# SERVER START
+###
 
 if __name__ == '__main__':
 	#Bind to PORT if defined, otherwise default to 5000.
