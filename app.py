@@ -1,4 +1,5 @@
-import sys, os
+import sys
+import os
 import json
 import pylibmc
 from urlparse import urlparse, urlunparse
@@ -12,7 +13,6 @@ from flask import redirect
 app = Flask(__name__)
 
 
-
 ###
 # APP ENVIRONMENT SETUP
 ###
@@ -24,21 +24,22 @@ log_handler.setLevel(logging.WARNING)
 app.logger.addHandler(log_handler)
 
 # Check if we are on local development machine (default is prod)
-DEVELOPMENT = os.environ.get('DEVELOPMENT','FALSE')
+DEVELOPMENT = os.environ.get('DEVELOPMENT', 'FALSE')
 
 # Connect to memcache with config from environment variables.
 if DEVELOPMENT == 'TRUE':
 	# Simple non-binary connection in case of development machine
 	mc = pylibmc.Client(
-	    servers=[os.environ.get('MEMCACHE_SERVERS','127.0.0.1')]
+		servers=[os.environ.get('MEMCACHE_SERVERS', '127.0.0.1')]
 	)
 else:
 	mc = pylibmc.Client(
-	    servers=[os.environ.get('MEMCACHE_SERVERS','127.0.0.1')],
-	    username=os.environ.get('MEMCACHE_USERNAME',''),
-	    password=os.environ.get('MEMCACHE_PASSWORD',''),
-	    binary=True
+		servers=[os.environ.get('MEMCACHE_SERVERS', '127.0.0.1')],
+		username=os.environ.get('MEMCACHE_USERNAME', ''),
+		password=os.environ.get('MEMCACHE_PASSWORD', ''),
+		binary=True
 	)
+
 
 # Redirect herokuapp to custom domain
 @app.before_request
@@ -50,7 +51,6 @@ def redirect_domain():
 		return redirect(urlunparse(urlparts_list), code=301)
 
 
-
 ###
 # APP WEB REQUEST HANDLERS
 ###
@@ -60,16 +60,18 @@ def redirect_domain():
 def index():
 	return render_template(
 		'index.html',
-		ANALYTICS=os.environ.get('ANALYTICS','UA-XXXXXX-1'),
-		MAPS_API=os.environ.get('MAPS_API','123456789')
+		ANALYTICS=os.environ.get('ANALYTICS', 'UA-XXXXXX-1'),
+		MAPS_API=os.environ.get('MAPS_API', '123456789')
 	)
-	
+
+
 # Output a list of sunset and sunrise azymuth for the whole year
 # NOT USED NOW
 @app.route('/getEphemerides', methods=['POST'])
 def getEphemerides():
 	lat = float(request.form['lat'])
 	return json.dumps(sunazymuth.GetEphemerides(lat))
+
 
 # Find 2 days matching the given azymuth
 # Returns in JSON:
@@ -79,7 +81,7 @@ def getEphemerides():
 def findMatch():
 	global mc
 	# As request is unicode, we must transform it to a string to use as memcache key
-	lat = request.form['lat'].encode('ascii','ignore')
+	lat = request.form['lat'].encode('ascii', 'ignore')
 	az = float(request.form['az'])
 	# Get the fullyear calc from the cache
 	try:
@@ -92,8 +94,7 @@ def findMatch():
 		# If cache error, log the exception and compute the result anyway
 		app.log_exception(e)
 		fullyear = sunazymuth.GetEphemerides(float(lat))
-	return json.dumps(sunazymuth.GetMatchingDay(fullyear,az))
-
+	return json.dumps(sunazymuth.GetMatchingDay(fullyear, az))
 
 
 ###
@@ -106,6 +107,7 @@ def send_text_file(file_name):
 	file_dot_text = file_name + '.txt'
 	return app.send_static_file(file_dot_text)
 
+
 @app.after_request
 def add_header(response):
 	"""
@@ -116,11 +118,11 @@ def add_header(response):
 	response.headers['Cache-Control'] = 'public, max-age=600'
 	return response
 
+
 @app.errorhandler(404)
 def page_not_found(error):
 	"""Custom 404 page."""
 	return render_template('404.html'), 404
-
 
 
 ###
