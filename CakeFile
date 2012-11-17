@@ -1,0 +1,26 @@
+{exec} = require 'child_process'
+
+task 'compile', 'Compiles coffee in static/src/ to JS', ->
+	compile()
+
+task 'compress', 'Runs UglifyJS all JS files and create source-map', ->
+	compress()
+
+task 'build', 'Does the full build magic', ->
+	compile -> compress()
+
+compile = (callback) ->
+	exec 'coffee --compile static/src/', (err, stdout, stderr) ->
+		throw err if err
+		console.log "Compiled Coffee files"
+		callback?()
+
+compress = (callback) ->
+	exec 'uglifyjs2 static/src/*.js static/vendor/*.js
+	--compress
+	--output static/js/app.min.js
+	--source-map static/js/app.min.js.map
+	--source-map-root /', (err, stdout, stderr) ->
+		throw err if err
+		console.log "Compressed app.min.js"
+		callback?()

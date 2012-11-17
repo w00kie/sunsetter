@@ -1,3 +1,3 @@
 web: python app.py
 memcache: memcached -v
-coffee: coffee --watch --output static/js/ --compile lib/
+coffee: coffee --watch --compile static/src/
