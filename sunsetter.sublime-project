@@ -1,0 +1,15 @@
+{
+	"folders":
+	[
+		{
+			"path": "/Users/francois/Projects/sunsetter"
+		}
+	],
+	"build_systems":
+	[
+		{
+			"name":"Cake: Build JS",
+			"cmd": ["cake", "build"]
+		}
+	]
+}
