@@ -16,7 +16,7 @@ compile = (callback) ->
 		callback?()
 
 compress = (callback) ->
-	exec 'uglifyjs2 static/src/*.js static/vendor/*.js
+	exec 'uglifyjs static/src/*.js static/vendor/*.js
 	--compress
 	--output static/js/app.min.js
 	--source-map static/js/app.min.js.map
