@@ -1,0 +1,8 @@
+{
+	"name": "sunsetter",
+	"version": "1.0",
+	"dependencies": {
+		"coffee-script": ">1.6.1",
+		"uglify-js": ">2"
+	}
+}
