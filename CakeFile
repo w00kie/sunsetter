@@ -10,7 +10,7 @@ task 'build', 'Does the full build magic', ->
 	compile -> compress()
 
 compile = (callback) ->
-	exec 'coffee --compile static/src/', (err, stdout, stderr) ->
+	exec 'coffee --map --compile static/src/', (err, stdout, stderr) ->
 		throw err if err
 		console.log "Compiled Coffee files"
 		callback?()
@@ -19,8 +19,10 @@ compress = (callback) ->
 	exec 'uglifyjs static/src/*.js static/vendor/*.js
 	--compress
 	--output static/js/app.min.js
+	--in-source-map static/src/tools.map
 	--source-map static/js/app.min.js.map
-	--source-map-root /', (err, stdout, stderr) ->
+	--source-map-root /
+	--source-map-url app.min.js.map', (err, stdout, stderr) ->
 		throw err if err
 		console.log "Compressed app.min.js"
 		callback?()
