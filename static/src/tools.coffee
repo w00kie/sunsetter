@@ -5,17 +5,20 @@ $ ->
 		latlng = new google.maps.LatLng google.loader.ClientLocation.latitude, google.loader.ClientLocation.longitude
 	else	# Else center in Tokyo
 		latlng = new google.maps.LatLng(35.41, 139.44)
-	
+
+	# Enable the visual refresh
+	google.maps.visualRefresh = true
+
 	myOptions =
 		zoom: 9
 		center: latlng
 		mapTypeId: google.maps.MapTypeId.ROADMAP
-	
+
 	map = new google.maps.Map document.getElementById("map_canvas"), myOptions
-	
+
 	# Default marker position
 	markerpos = new google.maps.LatLng 1, 1
-	
+
 	# Initialize POV and POI Markers as well as LOS Polyline
 	povmarker = new google.maps.Marker(
 		position: markerpos
@@ -24,14 +27,14 @@ $ ->
 		draggable: true
 		visible: false
 	)
-	
+
 	poimarker = new google.maps.Marker(
 		position: markerpos
 		map: map
 		draggable: true
 		visible: false
 	)
-	
+
 	los = new google.maps.Polyline(
 		path: [
 			povmarker.getPosition()
@@ -41,7 +44,7 @@ $ ->
 		strokeOpacity: 0
 		strokeWeight: 6
 	)
-	
+
 	los.setMap map
 
 	# Click on the map event - works only 2 first times
@@ -62,7 +65,7 @@ $ ->
 			queryMatch povmarker, poimarker
 			$("#step2").removeClass("active", 500)
 			$("#step3").addClass("active", 500)
-	
+
 	# Move markers event
 	$([povmarker, poimarker]).each (i,marker) =>
 		google.maps.event.addListener marker, 'position_changed', () =>
@@ -71,13 +74,13 @@ $ ->
 			$("#azimuth").text document.az.round(2)+"º"
 			# Clear results
 			$("#results").html("")
-	
+
 	# Query for a match on drop
 	$([povmarker, poimarker]).each (i,marker) =>
 		google.maps.event.addListener marker, 'dragend', () =>
 			#queryEphemerides(povmarker)
 			queryMatch povmarker, poimarker
-	
+
 	# Reset button action
 	$("#reset").click () ->
 		povmarker.setOptions {position: markerpos, visible: false}
@@ -89,7 +92,7 @@ $ ->
 		$("#azimuth").hide()
 		$("#results").html("")
 		window.location.hash = ""
-	
+
 	# Setup map if vars passed in URL hash
 	hash = getHash()
 	if "pov" in Object.keys(hash) and "poi" in Object.keys(hash)
@@ -115,7 +118,7 @@ $ ->
 		$("#azimuth").show()
 		# Finally call the backend
 		queryMatch povmarker, poimarker
-	else	
+	else
 		# Try HTML5 geolocation
 		# Do it only if no location in URL as asynchronous geoloc messes with fitBounds
 		if navigator.geolocation
@@ -181,10 +184,10 @@ queryMatch = (pov, poi) ->
 		top: 'auto' # Top position relative to parent in px
 		left: 'auto' # Left position relative to parent in px
 	).spin($("#results")[0])
-	
+
 	# Log a request to Google Analytics
 	_gaq.push ['_trackEvent', 'Interaction', 'Request']
-	
+
 	povlat = pov.getPosition().lat().round(1)
 	$.ajax(
 		type: "POST"
