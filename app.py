@@ -1,7 +1,7 @@
 import sys
 import os
 import json
-import pylibmc
+import redis
 from urlparse import urlparse, urlunparse
 
 import sunazymuth
@@ -26,20 +26,8 @@ app.logger.addHandler(log_handler)
 # Check if we are on local development machine (default is prod)
 DEVELOPMENT = os.environ.get('DEVELOPMENT', 'FALSE')
 
-# Connect to memcache with config from environment variables.
-if DEVELOPMENT == 'TRUE':
-	# Simple non-binary connection in case of development machine
-	mc = pylibmc.Client(
-		servers=[os.environ.get('MEMCACHE_SERVERS', '127.0.0.1')]
-	)
-else:
-	mc = pylibmc.Client(
-		servers=[os.environ.get('MEMCACHE_SERVERS', '127.0.0.1')],
-		username=os.environ.get('MEMCACHE_USERNAME', ''),
-		password=os.environ.get('MEMCACHE_PASSWORD', ''),
-		binary=True
-	)
-
+# Connect to Redis
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 # Redirect herokuapp to custom domain
 @app.before_request
@@ -79,18 +67,20 @@ def getEphemerides():
 #	- matches = array of 2 matching days, nothing if azymuth is out of bounds
 @app.route('/findMatch', methods=['POST'])
 def findMatch():
-	global mc
+	global r
 	# As request is unicode, we must transform it to a string to use as memcache key
 	lat = request.form['lat'].encode('ascii', 'ignore')
+	latkey = 'sunsetio:'+ lat
 	az = float(request.form['az'])
 	# Get the fullyear calc from the cache
 	try:
-		if lat in mc:
-			fullyear = mc.get(lat)
-		else:
+		fullyear = r.get(latkey)
+		if not fullyear:
 			fullyear = sunazymuth.GetEphemerides(float(lat))
-			mc.set(lat, fullyear)
-	except pylibmc.Error as e:
+			r.set(latkey, json.dumps(fullyear))
+		else:
+			fullyear = json.loads(fullyear)
+	except redis.RedisError as e:
 		# If cache error, log the exception and compute the result anyway
 		app.log_exception(e)
 		fullyear = sunazymuth.GetEphemerides(float(lat))
