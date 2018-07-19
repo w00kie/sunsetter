@@ -3,7 +3,7 @@
 import math
 import datetime
 import time
-from Pysolar import solar
+from pysolar import solar
 
 # Zenith angle of different phases of sunset
 FULL_SUN = 89.75			# Lower limb touches horizon
@@ -20,8 +20,7 @@ def closest(target, collection):
 
 
 def GetSunriseAzymuth(lat, day):
-	# day = solar.GetDayOfYear(utc_datetime)
-	decl = math.radians(solar.GetDeclination(day))
+	decl = math.radians(solar.get_declination(day))
 	lat_rad = math.radians(lat)
 	zenith_rad = math.radians(SUNRISE_TYPE)
 
@@ -31,8 +30,7 @@ def GetSunriseAzymuth(lat, day):
 
 
 def GetSunriseHourAngle(lat, day):
-	# day = solar.GetDayOfYear(utc_datetime)
-	decl = math.radians(solar.GetDeclination(day))
+	decl = math.radians(solar.get_declination(day))
 	lat_rad = math.radians(lat)
 	zenith_rad = math.radians(SUNRISE_TYPE)
 
@@ -43,9 +41,8 @@ def GetSunriseHourAngle(lat, day):
 
 # Return timestamp for UTC time of Sunrise
 def GetSunriseTime(lat, longitude, day):
-	# day = solar.GetDayOfYear(utc_datetime)
 	# get minutes from UTC midnight
-	minutes = 720 + 4 * (-longitude - GetSunriseHourAngle(lat, day)) - solar.EquationOfTime(day)
+	minutes = 720 + 4 * (-longitude - GetSunriseHourAngle(lat, day)) - solar.equation_of_time(day)
 	# calculate the UTC time of sunrise
 	sunrise = GetUTCMidnight(day) + datetime.timedelta(minutes=minutes)
 	return GetTimestamp(sunrise)
@@ -53,9 +50,8 @@ def GetSunriseTime(lat, longitude, day):
 
 # Return timestamp for UTC time of Sunset
 def GetSunsetTime(lat, longitude, day):
-	# day = solar.GetDayOfYear(utc_datetime)
 	# get minutes from UTC midnight
-	minutes = 720 + 4 * (-longitude + GetSunriseHourAngle(lat, day)) - solar.EquationOfTime(day)
+	minutes = 720 + 4 * (-longitude + GetSunriseHourAngle(lat, day)) - solar.equation_of_time(day)
 	# calculate the UTC time of sunset
 	sunset = GetUTCMidnight(day) + datetime.timedelta(minutes=minutes)
 	return GetTimestamp(sunset)
