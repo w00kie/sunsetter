@@ -1,3 +1,5 @@
+import {Spinner} from 'spin.js'
+
 $ ->
 	# Create map
 	# If geolocated, set current position as center
