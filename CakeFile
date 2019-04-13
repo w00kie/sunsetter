@@ -19,10 +19,7 @@ compress = (callback) ->
 	exec 'uglifyjs static/src/*.js static/vendor/*.js
 	--compress
 	--output static/js/app.min.js
-	--in-source-map static/src/tools.map
-	--source-map static/js/app.min.js.map
-	--source-map-root /
-	--source-map-url app.min.js.map', (err, stdout, stderr) ->
+	--source-map "content=\'static/src/tools.map\',filename=\'static/js/app.min.js.map\',url=\'app.min.js.map\'"', (err, stdout, stderr) ->
 		throw err if err
 		console.log "Compressed app.min.js"
 		callback?()

@@ -1,8 +1,12 @@
 {
 	"name": "sunsetter",
 	"version": "1.0.0",
+	"private": true,
 	"dependencies": {
-		"coffee-script": ">1.6.1",
-		"uglify-js": ">2"
+		"coffeescript": ">1.6.1",
+		"uglify-es": ">2"
+	},
+	"scripts": {
+		"build": "cake build"
 	}
 }

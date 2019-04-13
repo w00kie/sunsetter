@@ -4,3 +4,5 @@ venv
 .env
 .DS_Store
 *.sublime-workspace
+.vscode
+yarn-error.log
