@@ -8,22 +8,4 @@ It is based on the brilliant [pysolar](http://pysolar.org/) library for the hard
 
 How to run it on my machine?
 ============================
-If you want to download it and run it on your own machine you must first install `venv` in the same folder and activate it:
-
-    virtualenv venv --distribute
-    source venv/bin/activate
-
-This should change your prompt to include a `(venv)` prefix. Then install the pre-requirements with this command:
-
-    pip install -r requirements.txt
-
-Finally you need to add one environment variable to plug to local memcached without auth. Add the following to a `.env` file in the root folder:
-
-    DEVELOPMENT=TRUE
-
-And variables for API Keys:
-
-	ANALYTICS=UA-XXXXXX-1
-	MAPS_API=123456789qwertyuiop
-
-You can then run locally with `foreman start -f Procfile.dev` which will start the python app as well as memcached and a coffee compiler to compile any changes to the javascript on the fly. Connect to the app in your browser on http://localhost:5000
+If you want to download it and run it on your own machine you can just run `docker-compose up` to run it on http://localhost:8000 with a redis instance. You'll need a Google Maps API key enabled for localhost though.
