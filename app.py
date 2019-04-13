@@ -2,7 +2,7 @@ import sys
 import os
 import json
 import redis
-from urlparse import urlparse, urlunparse
+from urllib.parse import urlparse, urlunparse
 
 import sunazymuth
 
@@ -27,7 +27,8 @@ app.logger.addHandler(log_handler)
 DEVELOPMENT = os.environ.get('DEVELOPMENT', 'FALSE')
 
 # Connect to Redis
-r = redis.StrictRedis(host='localhost', port=6379, db=0)
+REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
+r = redis.StrictRedis(host=REDIS_HOST, port=6379, db=0)
 
 # Redirect herokuapp to custom domain
 @app.before_request
@@ -68,8 +69,7 @@ def getEphemerides():
 @app.route('/findMatch', methods=['POST'])
 def findMatch():
 	global r
-	# As request is unicode, we must transform it to a string to use as memcache key
-	lat = request.form['lat'].encode('ascii', 'ignore')
+	lat = request.form['lat']
 	latkey = 'sunsetio:'+ lat
 	az = float(request.form['az'])
 	# Get the fullyear calc from the cache
