@@ -12,8 +12,12 @@ services:
       --access-logfile -
       --reload
       app:app
+    volumes:
+      - '.:/sunsetter'
     environment: 
       - DEVELOPMENT='TRUE'
       - REDIS_HOST=redis
+    env_file:
+      - development.env
     ports:
       - '8000:8000'

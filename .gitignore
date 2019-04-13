@@ -6,3 +6,4 @@ venv
 *.sublime-workspace
 .vscode
 yarn-error.log
+development.env
