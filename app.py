@@ -17,12 +17,6 @@ app = Flask(__name__)
 # APP ENVIRONMENT SETUP
 ###
 
-# Logging setup
-import logging
-log_handler = logging.StreamHandler(sys.stdout)
-log_handler.setLevel(logging.WARNING)
-app.logger.addHandler(log_handler)
-
 # Check if we are on local development machine (default is prod)
 DEVELOPMENT = os.environ.get('DEVELOPMENT', 'FALSE')
 
