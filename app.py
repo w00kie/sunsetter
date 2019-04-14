@@ -4,6 +4,10 @@ import json
 import redis
 from urllib.parse import urlparse, urlunparse
 
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
+import git
+
 import sunazymuth
 
 from flask import Flask
@@ -18,7 +22,22 @@ app = Flask(__name__)
 ###
 
 # Check if we are on local development machine (default is prod)
-DEVELOPMENT = os.environ.get('DEVELOPMENT', 'FALSE')
+DEVELOPMENT = os.environ.get('DEVELOPMENT', False)
+
+ENV = 'production'
+if DEVELOPMENT:
+	ENV = 'development'
+
+repo = git.Repo(search_parent_directories=True)
+sha = repo.head.object.hexsha
+
+SENTRY_DSN = os.environ.get('SENTRY_DSN', '')
+sentry_sdk.init(
+	dsn=SENTRY_DSN,
+	environment=ENV,
+	release=sha,
+	integrations=[FlaskIntegration()]
+)
 
 # Connect to Redis
 REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')

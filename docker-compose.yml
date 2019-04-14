@@ -15,7 +15,7 @@ services:
     volumes:
       - '.:/sunsetter'
     environment: 
-      - DEVELOPMENT='TRUE'
+      - DEVELOPMENT=true
       - REDIS_HOST=redis
     env_file:
       - development.env

@@ -7,3 +7,5 @@ newrelic
 redis
 hiredis
 pytz
+sentry-sdk[flask]
+gitpython
