@@ -6,7 +6,6 @@ from urllib.parse import urlparse, urlunparse
 
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
-import git
 
 import sunazymuth
 
@@ -28,8 +27,7 @@ ENV = 'production'
 if DEVELOPMENT:
 	ENV = 'development'
 
-repo = git.Repo(search_parent_directories=True)
-sha = repo.head.object.hexsha
+sha = os.environ.get('GIT_COMMIT_SHA1', '')
 
 SENTRY_DSN = os.environ.get('SENTRY_DSN', '')
 sentry_sdk.init(
@@ -81,7 +79,6 @@ def getEphemerides():
 #	- matches = array of 2 matching days, nothing if azymuth is out of bounds
 @app.route('/findMatch', methods=['POST'])
 def findMatch():
-	global r
 	lat = request.form['lat']
 	latkey = 'sunsetio:'+ lat
 	az = float(request.form['az'])
