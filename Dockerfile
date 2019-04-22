@@ -4,8 +4,8 @@ ENV INSTALL_PATH /sunsetter
 RUN mkdir ${INSTALL_PATH}
 WORKDIR ${INSTALL_PATH}
 
-COPY requirements.txt requirements.txt
+COPY requirements/ requirements/
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements/test.txt
 
 COPY . .

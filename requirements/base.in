@@ -2,10 +2,8 @@ Flask
 Jinja2
 Pysolar
 gunicorn
-honcho
-newrelic
 redis
-hiredis
 pytz
 sentry-sdk[flask]
 gitpython
+pip-tools
