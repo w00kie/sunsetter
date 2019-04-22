@@ -60,7 +60,7 @@ def GetSunsetTime(lat, longitude, day):
 # Get sunset and sunrise azymuth for the whole year
 def GetEphemerides(lat):
 	fullyear = []
-	for d in range(1, 365):
+	for d in range(1, 366):
 		sunriseaz = GetSunriseAzymuth(lat, d)
 		sunsetaz = 360 - sunriseaz
 		fullyear.append([sunriseaz, sunsetaz])
