@@ -1,7 +1,7 @@
 .EXPORT_ALL_VARIABLES:
 .PHONY: test build clean
 
-OSRELEASE = $(shell cat /proc/sys/kernel/osrelease)
+OSRELEASE = $(-shell cat /proc/sys/kernel/osrelease)
 ifneq (,$(findstring Microsoft,$(OSRELEASE)))
 	compose_cmd = docker-compose.exe
 else
