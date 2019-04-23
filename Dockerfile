@@ -9,7 +9,6 @@ COPY requirements/test.txt /install/requirements.txt
 
 RUN apk add --update \
         g++ \
-        python3-dev \
         libxml2 \
         libxml2-dev &&\
     apk add libxslt-dev
