@@ -4,6 +4,5 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: |
-        make build
-        make test
+      - run: make build
+      - run: make test
