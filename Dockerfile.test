@@ -1,11 +1,11 @@
-FROM python:3.6-alpine as base
+FROM joyzoursky/python-chromedriver:3.6-alpine3.7-selenium as base
 
 FROM base as builder
 
 RUN mkdir /install
 WORKDIR /install
 
-COPY requirements/base.txt /install/requirements.txt
+COPY requirements/test.txt /install/requirements.txt
 
 RUN apk add --update \
         g++ \

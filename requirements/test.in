@@ -2,3 +2,6 @@
 
 Flask-Testing
 green
+pylint
+autopep8
+selenium
