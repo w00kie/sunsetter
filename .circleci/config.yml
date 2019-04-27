@@ -4,5 +4,6 @@ jobs:
     machine: true
     steps:
       - checkout
+      - run: touch development.env
       - run: make build
       - run: make test
