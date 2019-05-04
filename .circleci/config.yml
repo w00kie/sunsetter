@@ -8,7 +8,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: sunsetter-venv-{{ checksum requirement/test.txt }}
+          key: sunsetter-venv-{{ checksum "requirements/test.txt" }}
       - run:
           name: Install python environment
           command: |
@@ -17,7 +17,7 @@ jobs:
             source $BASH_ENV
             pip install -r requirements/test.txt
       - save_cache:
-          key: sunsetter-venv-{{ checksum requirement/test.txt }}
+          key: sunsetter-venv-{{ checksum "requirements/test.txt" }}
           paths:
             - ~/venv
       - run:

@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/w00kie/sunsetter.svg?style=svg)](https://circleci.com/gh/w00kie/sunsetter)
+
 What is this?
 =============
 [Sunsetter](http://www.sunset.io) is a simple python web app running on Heroku that can calculate, given a point of view and a point of interest (selected on a google map) on which day of the year the sun will rise or set in this direction. More info on my [blog](http://w00kie.com/category/sunsetter-app/).
