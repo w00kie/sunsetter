@@ -22,7 +22,7 @@ jobs:
             - ~/venv
       - run:
           name: Run test suite
-          command: green -vvv --run-coverage -j test-report.xml
+          command: green -vvv --run-coverage -j test-results/unittest/results.xml
       - run:
           name: Generate code coverage report
           command: |
@@ -31,4 +31,4 @@ jobs:
       - store_artifacts:
           path: htmlcov
       - store_test_results:
-         path: test-report.xml
+         path: test-results
