@@ -22,7 +22,9 @@ jobs:
             - ~/venv
       - run:
           name: Run test suite
-          command: green -vvv --run-coverage -j test-results/unittest/results.xml
+          command: |
+            mkdir -p test-results/unittest
+            green -vvv --run-coverage -j test-results/unittest/results.xml
       - run:
           name: Generate code coverage report
           command: |
