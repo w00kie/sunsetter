@@ -1,7 +1,7 @@
 import sys
 import os
 import json
-import redis
+from envparse import env
 from urllib.parse import urlparse, urlunparse
 
 import sentry_sdk
@@ -21,25 +21,17 @@ app = Flask(__name__)
 ###
 
 # Check if we are on local development machine (default is prod)
-DEVELOPMENT = os.environ.get('DEVELOPMENT', False)
+FLASK_ENV = env('FLASK_ENV', default='production')
 
-ENV = 'production'
-if DEVELOPMENT:
-	ENV = 'development'
+sha = env('GIT_COMMIT_SHA1', default='')
 
-sha = os.environ.get('GIT_COMMIT_SHA1', '')
-
-SENTRY_DSN = os.environ.get('SENTRY_DSN', '')
+SENTRY_DSN = env('SENTRY_DSN', default='')
 sentry_sdk.init(
 	dsn=SENTRY_DSN,
-	environment=ENV,
+	environment=FLASK_ENV,
 	release=sha,
 	integrations=[FlaskIntegration()]
 )
-
-# Connect to Redis
-REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
-r = redis.StrictRedis(host=REDIS_HOST, port=6379, db=0)
 
 # Redirect herokuapp to custom domain
 @app.before_request
@@ -60,8 +52,8 @@ def redirect_domain():
 def index():
 	return render_template(
 		'index.html',
-		ANALYTICS=os.environ.get('ANALYTICS', 'UA-XXXXXX-1'),
-		MAPS_API=os.environ.get('MAPS_API', '123456789')
+		ANALYTICS=env('ANALYTICS', default='UA-XXXXXX-1'),
+		MAPS_API=env('MAPS_API', default='123456789')
 	)
 
 
@@ -80,20 +72,10 @@ def getEphemerides():
 @app.route('/findMatch', methods=['POST'])
 def findMatch():
 	lat = request.form['lat']
-	latkey = 'sunsetio:'+ lat
 	az = float(request.form['az'])
-	# Get the fullyear calc from the cache
-	try:
-		fullyear = r.get(latkey)
-		if not fullyear:
-			fullyear = sunazymuth.GetEphemerides(float(lat))
-			r.set(latkey, json.dumps(fullyear))
-		else:
-			fullyear = json.loads(fullyear)
-	except redis.RedisError as e:
-		# If cache error, log the exception and compute the result anyway
-		app.log_exception(e)
-		fullyear = sunazymuth.GetEphemerides(float(lat))
+
+	fullyear = sunazymuth.GetEphemerides(float(lat))
+
 	return json.dumps(sunazymuth.GetMatchingDay(fullyear, az))
 
 
@@ -110,6 +92,8 @@ def send_text_file(file_name):
 
 @app.after_request
 def add_header(response):
+	# Add header to track Sentry release
+	response.headers['X-Sentry-Release'] = sha
 	"""
 	Add headers to both force latest IE rendering engine or Chrome Frame,
 	and also to cache the rendered page for 10 minutes.
@@ -123,14 +107,3 @@ def add_header(response):
 def page_not_found(error):
 	"""Custom 404 page."""
 	return render_template('404.html'), 404
-
-
-###
-# SERVER START
-###
-
-if __name__ == '__main__':
-	#Bind to PORT if defined, otherwise default to 5000.
-	port = int(os.environ.get('PORT', 5000))
-	debug = os.environ.get('DEBUG', False)
-	app.run(host='0.0.0.0', port=port, debug=debug)

@@ -2,8 +2,8 @@ Flask
 Jinja2
 Pysolar
 gunicorn
-redis
 pytz
 sentry-sdk[flask]
 gitpython
 pip-tools
+envparse

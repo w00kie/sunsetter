@@ -1,22 +1,16 @@
 version: '3'
 
 services:
-  redis:
-    image: 'redis:latest'
-
   web:
-    build: .
-    depends_on:
-      - redis
-    command: gunicorn --bind 0.0.0.0:8000
-      --access-logfile -
-      --reload
-      app:app
+    build:
+      context: .
+      args:
+        - GIT_COMMIT_SHA1_BUILD
+    image: sunsetter:prod
     volumes:
       - '.:/sunsetter'
     environment: 
-      - DEVELOPMENT=true
-      - REDIS_HOST=redis
+      - PORT=8000
     env_file:
       - development.env
     ports:
