@@ -4,7 +4,6 @@ jobs:
     working_directory: ~/sunsetter
     docker:
       - image: circleci/python:3.6-browsers
-      - image: circleci/redis
     steps:
       - checkout
       - restore_cache:
