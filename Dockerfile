@@ -20,6 +20,17 @@ ENV INSTALL_PATH /sunsetter
 RUN mkdir ${INSTALL_PATH}
 WORKDIR ${INSTALL_PATH}
 
+ARG GIT_COMMIT_SHA1_BUILD
+ENV GIT_COMMIT_SHA1=${GIT_COMMIT_SHA1_BUILD}
+
+ENV PORT=8000
+EXPOSE ${PORT}
+
+ENV MAPS_API=""
+ENV SENTRY_DSN=""
+
 COPY --from=builder /install /usr/local
 
 COPY . .
+
+ENTRYPOINT [ "sh", "-c", "gunicorn --bind 0.0.0.0:$PORT --access-logfile - app:app" ]

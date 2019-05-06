@@ -20,6 +20,16 @@ ENV INSTALL_PATH /sunsetter
 RUN mkdir ${INSTALL_PATH}
 WORKDIR ${INSTALL_PATH}
 
+ARG GIT_COMMIT_SHA1_BUILD
+ENV GIT_COMMIT_SHA1=${GIT_COMMIT_SHA1_BUILD}
+
+ENV FLASK_RUN_PORT=8000
+EXPOSE ${FLASK_RUN_PORT}
+
+ENV FLASK_ENV=development
+
 COPY --from=builder /install /usr/local
 
 COPY . .
+
+ENTRYPOINT [ "flask", "run", "--host=0.0.0.0" ]
