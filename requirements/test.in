@@ -5,3 +5,4 @@ green
 pylint
 autopep8
 selenium
+coveralls

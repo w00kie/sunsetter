@@ -29,6 +29,9 @@ jobs:
           command: |
             coverage report
             coverage html
+      - run:
+          name: Push coverage results to coveralls
+          command: coveralls
       - store_artifacts:
           path: htmlcov
       - store_test_results:
