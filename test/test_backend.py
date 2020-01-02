@@ -3,6 +3,8 @@ import unittest
 from flask import json
 from flask_testing import TestCase
 
+from .helpers import format_day
+
 from app import app
 
 
@@ -53,11 +55,12 @@ class TestData(TestBase):
             ),
             follow_redirects=True
         )
+        # Must match ['May 06', 'August 04']
         self.assertEquals(
             json.loads(response.data), 
             dict(
                 suntype='Sunset',
-                matches=['May 06', 'August 04']
+                matches=[format_day(126), format_day(216)]
             )
         )
 
@@ -68,11 +71,12 @@ class TestData(TestBase):
                 az=299.18
             )
         )
+        # Must match ['May 30', 'July 12']
         self.assertEquals(
             json.loads(response.data), 
             dict(
                 suntype='Sunset',
-                matches=['May 30', 'July 12']
+                matches=[format_day(150), format_day(193)]
             )
         )
 
@@ -83,11 +87,12 @@ class TestData(TestBase):
                 az=112.82
             )
         )
+        # Must match ['January 02', 'December 06']
         self.assertEquals(
             json.loads(response.data), 
             dict(
                 suntype='Sunrise',
-                matches=['January 02', 'December 06']
+                matches=[format_day(2), format_day(340)]
             )
         )
 

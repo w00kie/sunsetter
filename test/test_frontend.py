@@ -4,6 +4,8 @@ import time
 from flask_testing import LiveServerTestCase
 from selenium import webdriver
 
+from .helpers import format_day
+
 from app import app
 
 
@@ -25,7 +27,7 @@ class TestBase(LiveServerTestCase):
 
 class TestInterface(TestBase):
     def test_menu(self):
-        """Check menu steps are activate in order"""
+        """Check menu steps are activated in order"""
         step1 = self.driver.find_element_by_id('step1')
         self.assertIn('active', step1.get_attribute('class'))
 
@@ -81,8 +83,8 @@ class TestInterface(TestBase):
         results = self.driver.find_element_by_id('results')
 
         self.assertIn('Sunset', results.text)
-        self.assertIn('February 02', results.text)
-        self.assertIn('November 05', results.text)
+        self.assertIn(format_day(33), results.text)
+        self.assertIn(format_day(309), results.text)
 
 
 if __name__ == '__main__':
