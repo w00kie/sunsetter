@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"private": true,
 	"dependencies": {
+		"@sentry/cli": "^1.42.0",
 		"spin.js": "^4.0.0"
 	},
 	"scripts": {
