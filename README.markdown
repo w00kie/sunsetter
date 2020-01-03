@@ -1,4 +1,5 @@
 [![Actions Status](https://github.com/w00kie/sunsetter/workflows/Run%20linter%20and%20tests/badge.svg)](https://github.com/w00kie/sunsetter/actions)
+[![Coverage Status](https://coveralls.io/repos/github/w00kie/sunsetter/badge.svg?branch=master)](https://coveralls.io/github/w00kie/sunsetter?branch=master)
 
 What is this?
 =============
