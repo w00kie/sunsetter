@@ -41,3 +41,8 @@ jobs:
       run: |
         pip install pytest
         pytest
+    - name: Upload test screenshots
+      uses: actions/upload-artifact@v1
+      with:
+        name: screenshots
+        path: screenshots
