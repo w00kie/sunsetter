@@ -35,21 +35,18 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest
+    - name: Test with pytest and generate coverage
       env:
         MAPS_API: ${{ secrets.MAPS_API }}
       run: |
         pip install pytest
-        pytest
+        coverage run -m pytest
     - name: Upload test screenshots
       uses: actions/upload-artifact@v1
       if: failure()
       with:
         name: screenshots
         path: screenshots
-    - name: Generate code coverage report
-      run: |
-        coverage report
     - name: Push coverage results to coveralls
       uses: coverallsapp/github-action@master
       with:
