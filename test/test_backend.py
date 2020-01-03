@@ -56,7 +56,7 @@ class TestData(TestBase):
             follow_redirects=True
         )
         # Must match ['May 06', 'August 04']
-        self.assertEquals(
+        self.assertEqual(
             json.loads(response.data), 
             dict(
                 suntype='Sunset',
@@ -72,7 +72,7 @@ class TestData(TestBase):
             )
         )
         # Must match ['May 30', 'July 12']
-        self.assertEquals(
+        self.assertEqual(
             json.loads(response.data), 
             dict(
                 suntype='Sunset',
@@ -88,7 +88,7 @@ class TestData(TestBase):
             )
         )
         # Must match ['January 02', 'December 06']
-        self.assertEquals(
+        self.assertEqual(
             json.loads(response.data), 
             dict(
                 suntype='Sunrise',
@@ -104,7 +104,7 @@ class TestData(TestBase):
             ),
             follow_redirects=True
         )
-        self.assertEquals(
+        self.assertEqual(
             json.loads(response.data), 
             dict(
                 suntype='Sunset'
