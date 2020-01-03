@@ -15,6 +15,7 @@ GIT_COMMIT_SHA1_BUILD=$(shell git rev-parse HEAD | cut -c 1-8)
 clean:
 	@find . -name '*.pyc' -exec rm \{\} \;
 	@find . -name '.coverage*' -exec rm \{\} \;
+	rm -rf screenshots
 
 build-test:
 	@$(compose_cmd) -f docker-compose.test.yml -p test build

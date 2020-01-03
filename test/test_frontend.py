@@ -22,6 +22,9 @@ class TestBase(LiveServerTestCase):
         self.driver.get(self.get_server_url())
 
     def tearDown(self):
+        for method, error in self._outcome.errors:
+            if error:
+                self.driver.save_screenshot(f'screenshots/{method}.png')
         self.driver.quit()
 
 
