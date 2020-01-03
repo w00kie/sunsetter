@@ -1,6 +1,6 @@
 name: Run linter and tests
 
-on: [push]
+on: ["push", "pull_request"]
 
 jobs:
   build:
@@ -47,3 +47,10 @@ jobs:
       with:
         name: screenshots
         path: screenshots
+    - name: Generate code coverage report
+      run: |
+        coverage report
+    - name: Push coverage results to coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}

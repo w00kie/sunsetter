@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/w00kie/sunsetter.svg?style=svg)](https://circleci.com/gh/w00kie/sunsetter)
+[![Actions Status](https://github.com/w00kie/sunsetter/workflows/Run%20linter%20and%20tests/badge.svg)](https://github.com/w00kie/sunsetter/actions)
 
 What is this?
 =============
