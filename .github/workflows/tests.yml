@@ -60,9 +60,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Setup Google Cloud
-          uses: actions/gcloud/auth@master
-          env:
-            GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
+        uses: actions/gcloud/auth@master
+        env:
+          GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
       - name: Configure docker
         run: |
           gcloud auth configure-docker
