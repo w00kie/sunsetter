@@ -60,7 +60,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Setup Google Cloud
-        - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
           with:
             version: '270.0.0'
             service_account_key: ${{ secrets.GCLOUD_AUTH }}
@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Google Cloud
-        - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
           with:
             version: '270.0.0'
             service_account_key: ${{ secrets.GCLOUD_AUTH }}
