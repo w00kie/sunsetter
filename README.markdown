@@ -7,6 +7,8 @@ What is this?
 
 It is based on the brilliant [pysolar](http://pysolar.org/) library for the hardcore astronomical calculations. It also uses [spin.js](http://fgnass.github.com/spin.js/) for a cool Ajax spinner without any GIF.
 
+It's currently setup to self deploy and run on Google Cloud Run with Github Actions CI/CD.
+
 **Note:** the app is configured to predict when the sun's _lower limb_ touches the horizon, not the _civil sunset_ when the sun completely disappears behind the horizon, as this makes for a better picture. This setting can be modified app-wide in `sunazymuth.py`.
 
 How to run it on my machine?
