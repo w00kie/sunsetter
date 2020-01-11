@@ -8,6 +8,7 @@ blinker==1.4              # via sentry-sdk
 certifi==2019.11.28       # via sentry-sdk
 click==7.0                # via flask, pip-tools
 envparse==0.2.0
+flask-cdn==1.5.3
 flask==1.1.1
 gitdb2==2.0.6             # via gitpython
 gitpython==3.0.5

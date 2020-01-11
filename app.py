@@ -7,6 +7,8 @@ from urllib.parse import urlparse, urlunparse
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 
+from flask_cdn import CDN
+
 import sunazymuth
 
 from flask import Flask
@@ -33,14 +35,10 @@ sentry_sdk.init(
 	integrations=[FlaskIntegration()]
 )
 
-# Redirect herokuapp to custom domain
-@app.before_request
-def redirect_domain():
-	urlparts = urlparse(request.url)
-	if urlparts.netloc == 'sunsetter.herokuapp.com':
-		urlparts_list = list(urlparts)
-		urlparts_list[1] = 'www.sunset.io'
-		return redirect(urlunparse(urlparts_list), code=301)
+# Set static files location to CDN domain.
+# Activates only when STATIC_DOMAIN env variable is set (only in Production)
+app.config['CDN_DOMAIN'] = env('STATIC_DOMAIN', None)
+CDN(app)
 
 
 ###

@@ -7,3 +7,4 @@ sentry-sdk[flask]
 gitpython
 pip-tools
 envparse
+flask-cdn

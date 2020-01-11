@@ -34,11 +34,6 @@ class TestViews(TestBase):
         """Robots.txt must contain User-agent: *"""
         response = self.client.get('/robots.txt')
         self.assertIn(b'User-agent: *', response.data)
-    
-    def test_redirect_from_heroku(self):
-        """Calls to heroku must be redirected to new domain"""
-        response = self.client.get('/', base_url='https://sunsetter.herokuapp.com')
-        self.assertEqual(response.status_code, 301)
 
     def test_404(self):
         """404 page works"""
