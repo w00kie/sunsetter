@@ -27,6 +27,7 @@ app = Flask(__name__, static_url_path='')
 # Set static files location to CDN domain.
 # Activates only when STATIC_DOMAIN env variable is set (only in Production)
 app.config['CDN_DOMAIN'] = env('STATIC_DOMAIN', None)
+app.config['CDN_HTTPS'] = True
 CDN(app)
 
 # Check if we are on local development machine (default is prod)
