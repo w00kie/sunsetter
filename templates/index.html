@@ -6,6 +6,9 @@
 
 {% block js %}
 	<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key={{ MAPS_API }}"></script>
+	<script type="text/javascript">
+		var povicon = "{{ url_for('static', filename='img/man.png') }}"
+	</script>
 	<script type="text/javascript" src="{{ url_for('static', filename='js/bundle.js') }}"></script>
 {% endblock %}
 

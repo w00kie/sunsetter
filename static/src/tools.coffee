@@ -25,7 +25,7 @@ $ ->
 	povmarker = new google.maps.Marker(
 		position: markerpos
 		map: map
-		icon: '/static/img/man.png'
+		icon: povicon
 		draggable: true
 		visible: false
 	)
