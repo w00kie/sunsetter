@@ -74,7 +74,7 @@ jobs:
         run: |
           docker push gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }}
       - name: Push static files to Firebase hosting
-       uses: w9jds/firebase-action@master
+        uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting
         env:
