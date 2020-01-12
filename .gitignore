@@ -8,3 +8,5 @@ venv
 yarn-error.log
 development.env
 .coverage
+.firebaserc
+.firebase

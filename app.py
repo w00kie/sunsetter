@@ -15,12 +15,19 @@ from flask import Flask
 from flask import request
 from flask import render_template
 from flask import redirect
-app = Flask(__name__)
 
 
 ###
 # APP ENVIRONMENT SETUP
 ###
+
+# Serve static files from web root
+app = Flask(__name__, static_url_path='')
+
+# Set static files location to CDN domain.
+# Activates only when STATIC_DOMAIN env variable is set (only in Production)
+app.config['CDN_DOMAIN'] = env('STATIC_DOMAIN', None)
+CDN(app)
 
 # Check if we are on local development machine (default is prod)
 FLASK_ENV = env('FLASK_ENV', default='production')
@@ -34,11 +41,6 @@ sentry_sdk.init(
 	release=sha,
 	integrations=[FlaskIntegration()]
 )
-
-# Set static files location to CDN domain.
-# Activates only when STATIC_DOMAIN env variable is set (only in Production)
-app.config['CDN_DOMAIN'] = env('STATIC_DOMAIN', None)
-CDN(app)
 
 
 ###
@@ -80,13 +82,13 @@ def findMatch():
 ###
 # Boiler-plate stuff from github/flask_heroku
 ###
-
+'''
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
 	"""Send your static text file. robots.txt etc."""
 	file_dot_text = file_name + '.txt'
 	return app.send_static_file(file_dot_text)
-
+'''
 
 @app.after_request
 def add_header(response):

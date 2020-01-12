@@ -73,9 +73,13 @@ jobs:
       - name: Publish
         run: |
           docker push gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }}
-      - name: Push static files to Cloud Storage
-        run: |
-          gsutil cp -r static/ gs://${{ secrets.STATIC_DOMAIN }}
+      - name: Push static files to Firebase hosting
+       uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          PROJECT_ID: ${{ secrets.GCLOUD_PROJECT }}
       
   deploy:
     name: Deploy image to Google Cloud Run
@@ -98,5 +102,4 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-          STATIC_DOMAIN: ${{ secrets.STATIC_DOMAIN }}
           ENVIRONMENT: production
