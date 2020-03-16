@@ -1,4 +1,4 @@
-name: Run tests and deploy
+name: Run tests
 
 on: ["push", "pull_request"]
 
@@ -40,55 +40,3 @@ jobs:
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
       run: coveralls
-
-  build:
-    name: Build and Push image
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
-      - name: Setup Google Cloud
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-        with:
-          version: '270.0.0'
-          service_account_key: ${{ secrets.GCLOUD_AUTH }}
-      - name: Configure docker
-        run: |
-          gcloud auth configure-docker
-      - name: Build the Docker image
-        run: |
-          docker build . --build-arg $GITHUB_SHA --tag gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }}
-      - name: Publish
-        run: |
-          docker push gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }}
-      - name: Push static files to Firebase hosting
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --only hosting
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          PROJECT_ID: ${{ secrets.GCLOUD_PROJECT }}
-      
-  deploy:
-    name: Deploy image to Google Cloud Run
-    needs: [test, build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
-      - name: Setup Google Cloud
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-        with:
-          version: '270.0.0'
-          service_account_key: ${{ secrets.GCLOUD_AUTH }}
-      - name: Deploy
-        run: |
-          gcloud components install beta && gcloud beta run deploy ${{ secrets.GCLOUD_APP_NAME }} --quiet --image gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }} --project ${{ secrets.GCLOUD_PROJECT }} --region ${{ secrets.GCLOUD_REGION }} --platform managed
-      - name: Notify Sentry of deployment
-        uses: juankaram/sentry-release@v1.0.0
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-          ENVIRONMENT: production
