@@ -4,6 +4,7 @@ on:
   release:
     types: [created]
 
+jobs:
   build:
     name: Build and Push image
     runs-on: ubuntu-latest
