@@ -10,3 +10,7 @@ development.env
 .coverage
 .firebaserc
 .firebase
+
+# Certificates for localhost testing
+localhost.pem
+localhost-key.pem

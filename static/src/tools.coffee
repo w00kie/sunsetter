@@ -2,21 +2,19 @@ import {Spinner} from 'spin.js'
 
 $ ->
 	# Create map
-	# If geolocated, set current position as center
-	if google.loader.ClientLocation
-		latlng = new google.maps.LatLng google.loader.ClientLocation.latitude, google.loader.ClientLocation.longitude
-	else	# Else center in Tokyo
-		latlng = new google.maps.LatLng(35.41, 139.44)
-
 	# Enable the visual refresh
 	google.maps.visualRefresh = true
 
+	tokyo = new google.maps.LatLng(35.41, 139.44)
+
 	myOptions =
 		zoom: 9
-		center: latlng
+		center: tokyo
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 
 	map = new google.maps.Map document.getElementById("map_canvas"), myOptions
+
+	askGeolocation map
 
 	# Default marker position
 	markerpos = new google.maps.LatLng 1, 1
@@ -123,11 +121,16 @@ $ ->
 	else
 		# Try HTML5 geolocation
 		# Do it only if no location in URL as asynchronous geoloc messes with fitBounds
-		if navigator.geolocation
-			navigator.geolocation.getCurrentPosition (position) =>
+		askGeolocation map
+
+
+askGeolocation = (map) ->
+	if navigator.geolocation
+		navigator.geolocation.getCurrentPosition(
+			(position) ->
 				latlng = new google.maps.LatLng position.coords.latitude, position.coords.longitude
 				map.panTo latlng
-
+		)
 
 getAzimuth = (pov, poi) ->
 	povLat = pov.lat().toRad()
