@@ -32,4 +32,4 @@ COPY --from=builder /install /usr/local
 
 COPY . .
 
-ENTRYPOINT [ "flask", "run", "--host=0.0.0.0" ]
+ENTRYPOINT [ "flask", "run", "--cert=localhost.pem", "--key=localhost-key.pem", "--host=0.0.0.0" ]
