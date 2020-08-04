@@ -1,4 +1,4 @@
-FROM python:3.6-alpine as base
+FROM python:3.8-alpine as base
 
 FROM base as builder
 
@@ -12,7 +12,7 @@ RUN apk add --update \
         libxml2 \
         libxml2-dev &&\
     apk add libxslt-dev
-RUN pip install --install-option="--prefix=/install" -r /install/requirements.txt
+RUN pip install --prefix=/install -r /install/requirements.txt
 
 FROM base
 
