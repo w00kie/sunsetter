@@ -72,8 +72,9 @@ def getEphemerides():
 #	- matches = array of 2 matching days, nothing if azymuth is out of bounds
 @app.route('/findMatch', methods=['POST'])
 def findMatch():
-	lat = request.form['lat']
-	az = float(request.form['az'])
+	data = request.get_json() or request.form
+	lat = data['lat']
+	az = float(data['az'])
 
 	fullyear = sunazymuth.GetEphemerides(float(lat))
 

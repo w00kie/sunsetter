@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "outDir": "./built",
+        "allowJs": true,
+        "target": "es5",
+        "types": [
+            "googlemaps",
+            "google.analytics"
+        ]
+    },
+    "include": [
+        "./static/src/**/*"
+    ]
+}

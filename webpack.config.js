@@ -3,7 +3,8 @@
 const path = require('path');
 
 module.exports = {
-    entry: './static/src/tools.coffee',
+    // mode: 'development',
+    entry: './static/src/app.ts',
     context: path.resolve(__dirname),
     output: {
         path: path.resolve(__dirname, 'static/js'),
@@ -11,13 +12,12 @@ module.exports = {
     },
     module: {
         rules: [
-            {
-                test: /\.coffee$/,
-                use: ['coffee-loader']
-            }
+            { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+            { test: /\.js$/, loader: "source-map-loader" }
         ]
     },
     resolve: {
+        extensions: [".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
     },
     devtool: 'source-map',
     plugins: [
