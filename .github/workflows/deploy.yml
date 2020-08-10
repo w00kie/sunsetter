@@ -49,9 +49,10 @@ jobs:
         run: |
           gcloud components install beta && gcloud beta run deploy ${{ secrets.GCLOUD_APP_NAME }} --quiet --image gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }} --project ${{ secrets.GCLOUD_PROJECT }} --region ${{ secrets.GCLOUD_REGION }} --platform managed
       - name: Notify Sentry of deployment
-        uses: juankaram/sentry-release@v1.0.0
+        uses: getsentry/action-release@v1.0.0
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-          ENVIRONMENT: production
+        with:
+          environment: production
