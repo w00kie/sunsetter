@@ -12,9 +12,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Setup Google Cloud
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        uses: google-github-actions/setup-gcloud@master
         with:
-          version: '270.0.0'
           service_account_key: ${{ secrets.GCLOUD_AUTH }}
       - name: Configure docker
         run: |
@@ -40,14 +39,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Setup Google Cloud
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-        with:
-          version: '270.0.0'
-          service_account_key: ${{ secrets.GCLOUD_AUTH }}
       - name: Deploy
-        run: |
-          gcloud components install beta && gcloud beta run deploy ${{ secrets.GCLOUD_APP_NAME }} --quiet --image gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }} --project ${{ secrets.GCLOUD_PROJECT }} --region ${{ secrets.GCLOUD_REGION }} --platform managed
+        uses: google-github-actions/deploy-cloudrun@main
+        with:
+          credentials: ${{ secrets.GCLOUD_AUTH }}
+          image: gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }}
+          service: ${{ secrets.GCLOUD_APP_NAME }}
+          region: ${{ secrets.GCLOUD_REGION }}
+          project_id: ${{ secrets.GCLOUD_PROJECT }}
       - name: Notify Sentry of deployment
         uses: getsentry/action-release@v1.0.0
         env:
