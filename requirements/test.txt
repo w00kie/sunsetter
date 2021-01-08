@@ -27,7 +27,7 @@ isort==4.3.21             # via pylint
 itsdangerous==1.1.0       # via -r base.txt, flask
 jinja2==2.10.3            # via -r base.txt, flask
 lazy-object-proxy==1.4.3  # via astroid
-lxml==4.4.2               # via green
+lxml==4.6.2               # via green
 markupsafe==1.1.1         # via -r base.txt, jinja2
 mccabe==0.6.1             # via pylint
 pip-tools==4.3.0          # via -r base.txt
