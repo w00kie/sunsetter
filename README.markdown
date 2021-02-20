@@ -3,9 +3,9 @@
 
 What is this?
 =============
-[Sunsetter](http://www.sunset.io) is a simple python web app running on Heroku that can calculate, given a point of view and a point of interest (selected on a google map) on which day of the year the sun will rise or set in this direction. More info on my [blog](http://w00kie.com/category/sunsetter-app/).
+[Sunsetter](http://www.sunset.io) is a simple python web app that can calculate, given a point of view and a point of interest (selected on a google map) on which day of the year the sun will rise or set in this direction. More info on my [blog](https://w00kie.com/category/sunsetter-app/).
 
-It is based on the brilliant [pysolar](http://pysolar.org/) library for the hardcore astronomical calculations. It also uses [spin.js](http://fgnass.github.com/spin.js/) for a cool Ajax spinner without any GIF.
+It is based on the brilliant [pysolar](http://pysolar.org/) library for the hardcore astronomical calculations. It also uses [spin.js](https://fgnass.github.com/spin.js/) for a cool Ajax spinner without any GIF.
 
 It's currently setup to self deploy and run on Google Cloud Run with Github Actions CI/CD.
 
