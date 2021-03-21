@@ -13,7 +13,7 @@ declare global {
 export function askGeolocation(map: google.maps.Map): void {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-            (position: Position) => {
+            (position: GeolocationPosition) => {
                 let latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 map.panTo(latlng)
             }
