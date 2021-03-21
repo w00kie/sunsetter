@@ -4,46 +4,105 @@
 #
 #    pip-compile --output-file=test.txt test.in
 #
-astroid==2.3.3            # via pylint
-autopep8==1.4.4           # via -r test.in
-blinker==1.4              # via -r base.txt, sentry-sdk
-certifi==2019.11.28       # via -r base.txt, requests, sentry-sdk
-chardet==3.0.4            # via requests
-click==7.0                # via -r base.txt, flask, pip-tools
-colorama==0.4.3           # via green
-coverage==5.0.1           # via coveralls, green
-coveralls==1.10.0         # via -r test.in
-docopt==0.6.2             # via coveralls
-envparse==0.2.0           # via -r base.txt
-flask-cdn==1.5.3          # via -r base.txt
-flask-testing==0.7.1      # via -r test.in
-flask==1.1.1              # via -r base.txt, flask-cdn, flask-testing, sentry-sdk
-gitdb2==2.0.6             # via -r base.txt, gitpython
-gitpython==3.0.5          # via -r base.txt
-green==3.0.0              # via -r test.in
-gunicorn==20.0.4          # via -r base.txt
-idna==2.8                 # via requests
-isort==4.3.21             # via pylint
-itsdangerous==1.1.0       # via -r base.txt, flask
-jinja2==2.10.3            # via -r base.txt, flask
-lazy-object-proxy==1.4.3  # via astroid
-lxml==4.6.2               # via green
-markupsafe==1.1.1         # via -r base.txt, jinja2
-mccabe==0.6.1             # via pylint
-pip-tools==4.3.0          # via -r base.txt
-pycodestyle==2.5.0        # via autopep8
-pylint==2.4.4             # via -r test.in
-pysolar==0.8              # via -r base.txt
-pytz==2019.3              # via -r base.txt
-requests==2.22.0          # via coveralls
-selenium==3.141.0         # via -r test.in
-sentry-sdk[flask]==0.13.5  # via -r base.txt
-six==1.13.0               # via -r base.txt, astroid, pip-tools
-smmap2==2.0.5             # via -r base.txt, gitdb2
-unidecode==1.1.1          # via green
-urllib3==1.25.7           # via -r base.txt, requests, selenium, sentry-sdk
-werkzeug==0.16.0          # via -r base.txt, flask
-wrapt==1.11.2             # via astroid
+astroid==2.3.3
+    # via pylint
+autopep8==1.4.4
+    # via -r test.in
+blinker==1.4
+    # via
+    #   -r base.txt
+    #   sentry-sdk
+certifi==2019.11.28
+    # via
+    #   -r base.txt
+    #   sentry-sdk
+click==7.0
+    # via
+    #   -r base.txt
+    #   flask
+    #   pip-tools
+colorama==0.4.3
+    # via green
+coverage==5.0.1
+    # via green
+envparse==0.2.0
+    # via -r base.txt
+flask-cdn==1.5.3
+    # via -r base.txt
+flask-testing==0.7.1
+    # via -r test.in
+flask==1.1.1
+    # via
+    #   -r base.txt
+    #   flask-cdn
+    #   flask-testing
+    #   sentry-sdk
+gitdb2==2.0.6
+    # via
+    #   -r base.txt
+    #   gitpython
+gitpython==3.0.5
+    # via -r base.txt
+green==3.0.0
+    # via -r test.in
+gunicorn==20.0.4
+    # via -r base.txt
+isort==4.3.21
+    # via pylint
+itsdangerous==1.1.0
+    # via
+    #   -r base.txt
+    #   flask
+jinja2==2.10.3
+    # via
+    #   -r base.txt
+    #   flask
+lazy-object-proxy==1.4.3
+    # via astroid
+lxml==4.6.2
+    # via green
+markupsafe==1.1.1
+    # via
+    #   -r base.txt
+    #   jinja2
+mccabe==0.6.1
+    # via pylint
+pip-tools==4.3.0
+    # via -r base.txt
+pycodestyle==2.5.0
+    # via autopep8
+pylint==2.4.4
+    # via -r test.in
+pysolar==0.8
+    # via -r base.txt
+pytz==2019.3
+    # via -r base.txt
+selenium==3.141.0
+    # via -r test.in
+sentry-sdk[flask]==0.13.5
+    # via -r base.txt
+six==1.13.0
+    # via
+    #   -r base.txt
+    #   astroid
+    #   pip-tools
+smmap2==2.0.5
+    # via
+    #   -r base.txt
+    #   gitdb2
+unidecode==1.1.1
+    # via green
+urllib3==1.25.7
+    # via
+    #   -r base.txt
+    #   selenium
+    #   sentry-sdk
+werkzeug==0.16.0
+    # via
+    #   -r base.txt
+    #   flask
+wrapt==1.11.2
+    # via astroid
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
