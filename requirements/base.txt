@@ -4,26 +4,53 @@
 #
 #    pip-compile --output-file=base.txt base.in
 #
-blinker==1.4              # via sentry-sdk
-certifi==2019.11.28       # via sentry-sdk
-click==7.0                # via flask, pip-tools
+blinker==1.4
+    # via sentry-sdk
+certifi==2019.11.28
+    # via sentry-sdk
+click==7.0
+    # via
+    #   flask
+    #   pip-tools
 envparse==0.2.0
+    # via -r base.in
 flask-cdn==1.5.3
+    # via -r base.in
 flask==1.1.1
-gitdb2==2.0.6             # via gitpython
+    # via
+    #   -r base.in
+    #   flask-cdn
+    #   sentry-sdk
+gitdb2==2.0.6
+    # via gitpython
 gitpython==3.0.5
+    # via -r base.in
 gunicorn==20.0.4
-itsdangerous==1.1.0       # via flask
-jinja2==2.10.3
-markupsafe==1.1.1         # via jinja2
+    # via -r base.in
+itsdangerous==1.1.0
+    # via flask
+jinja2==2.11.3
+    # via
+    #   -r base.in
+    #   flask
+markupsafe==1.1.1
+    # via jinja2
 pip-tools==4.3.0
+    # via -r base.in
 pysolar==0.8
+    # via -r base.in
 pytz==2019.3
+    # via -r base.in
 sentry-sdk[flask]==0.13.5
-six==1.13.0               # via pip-tools
-smmap2==2.0.5             # via gitdb2
-urllib3==1.25.7           # via sentry-sdk
-werkzeug==0.16.0          # via flask
+    # via -r base.in
+six==1.13.0
+    # via pip-tools
+smmap2==2.0.5
+    # via gitdb2
+urllib3==1.25.7
+    # via sentry-sdk
+werkzeug==0.16.0
+    # via flask
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
