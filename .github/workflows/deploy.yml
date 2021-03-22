@@ -2,7 +2,7 @@ name: Build and Deploy to Google Cloud Run
 
 on:
   release:
-    types: [created]
+    types: [published]
 
 jobs:
   deploy:
