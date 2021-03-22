@@ -5,25 +5,28 @@ on:
     types: [created]
 
 jobs:
-  build:
-    name: Build and Push image
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@master
+      - id: get_version
+        uses: battila7/get-version-action@v2
+        
       - name: Setup Google Cloud
         uses: google-github-actions/setup-gcloud@master
         with:
+          project_id: ${{ secrets.GCLOUD_PROJECT }}
           service_account_key: ${{ secrets.GCLOUD_AUTH }}
+          
       - name: Configure docker
+        run: gcloud auth configure-docker
+        
+      - name: Build and Push the Docker image
         run: |
-          gcloud auth configure-docker
-      - name: Build the Docker image
-        run: |
-          docker build . --build-arg $GITHUB_SHA --tag gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }}
-      - name: Publish
-        run: |
-          docker push gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }}
+          docker build . --build-arg $GITHUB_SHA --tag gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }}:${{ steps.get_version.outputs.version }}
+          docker push gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }}:${{ steps.get_version.outputs.version }}
+          
       - name: Push static files to Firebase hosting
         uses: w9jds/firebase-action@master
         with:
@@ -31,22 +34,16 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           PROJECT_ID: ${{ secrets.GCLOUD_PROJECT }}
-      
-  deploy:
-    name: Deploy image to Google Cloud Run
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
+          
       - name: Deploy
         uses: google-github-actions/deploy-cloudrun@main
         with:
           credentials: ${{ secrets.GCLOUD_AUTH }}
-          image: gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }}
+          image: gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }}:${{ steps.get_version.outputs.version }}
           service: ${{ secrets.GCLOUD_APP_NAME }}
           region: ${{ secrets.GCLOUD_REGION }}
           project_id: ${{ secrets.GCLOUD_PROJECT }}
+          
       - name: Notify Sentry of deployment
         uses: getsentry/action-release@v1.0.0
         env:
