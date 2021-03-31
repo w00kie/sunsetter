@@ -59,7 +59,7 @@ jinja2==2.11.3
     #   flask
 lazy-object-proxy==1.4.3
     # via astroid
-lxml==4.6.2
+lxml==4.6.3
     # via green
 markupsafe==1.1.1
     # via
