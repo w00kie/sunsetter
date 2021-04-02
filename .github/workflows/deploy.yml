@@ -18,6 +18,7 @@ jobs:
         with:
           project_id: ${{ secrets.GCLOUD_PROJECT }}
           service_account_key: ${{ secrets.GCLOUD_AUTH }}
+          export_default_credentials: true
           
       - name: Configure docker
         run: gcloud auth configure-docker
@@ -38,11 +39,9 @@ jobs:
       - name: Deploy
         uses: google-github-actions/deploy-cloudrun@main
         with:
-          credentials: ${{ secrets.GCLOUD_AUTH }}
           image: gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }}:${{ steps.get_version.outputs.version }}
           service: ${{ secrets.GCLOUD_APP_NAME }}
           region: ${{ secrets.GCLOUD_REGION }}
-          project_id: ${{ secrets.GCLOUD_PROJECT }}
           
       - name: Notify Sentry of deployment
         uses: getsentry/action-release@v1.0.0
