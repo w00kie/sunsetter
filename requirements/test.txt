@@ -27,16 +27,16 @@ coverage==5.5
     # via green
 envparse==0.2.0
     # via -r base.txt
-flask-cdn==1.5.3
-    # via -r base.txt
-flask-testing==0.8.1
-    # via -r test.in
 flask==1.1.2
     # via
     #   -r base.txt
     #   flask-cdn
     #   flask-testing
     #   sentry-sdk
+flask-cdn==1.5.3
+    # via -r base.txt
+flask-testing==0.8.1
+    # via -r test.in
 gitdb==4.0.7
     # via
     #   -r base.txt
@@ -59,7 +59,7 @@ jinja2==2.11.3
     #   flask
 lazy-object-proxy==1.6.0
     # via astroid
-lxml==4.6.3
+lxml==4.6.5
     # via green
 markupsafe==1.1.1
     # via
