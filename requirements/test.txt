@@ -97,7 +97,7 @@ toml==0.10.2
     #   pylint
 unidecode==1.2.0
     # via green
-urllib3==1.26.4
+urllib3==1.26.5
     # via
     #   -r base.txt
     #   selenium

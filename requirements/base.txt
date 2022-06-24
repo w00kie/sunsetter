@@ -49,7 +49,7 @@ smmap==4.0.0
     # via gitdb
 toml==0.10.2
     # via pep517
-urllib3==1.26.4
+urllib3==1.26.5
     # via sentry-sdk
 werkzeug==1.0.1
     # via flask
