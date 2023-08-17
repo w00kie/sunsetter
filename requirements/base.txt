@@ -8,33 +8,35 @@ blinker==1.4
     # via sentry-sdk
 certifi==2020.12.5
     # via sentry-sdk
-click==7.1.2
+click==8.1.6
     # via
     #   flask
     #   pip-tools
 envparse==0.2.0
     # via -r base.in
-flask-cdn==1.5.3
-    # via -r base.in
-flask==1.1.2
+flask==2.2.5
     # via
     #   -r base.in
     #   flask-cdn
     #   sentry-sdk
+flask-cdn==1.5.3
+    # via -r base.in
 gitdb==4.0.7
     # via gitpython
 gitpython==3.1.14
     # via -r base.in
 gunicorn==20.1.0
     # via -r base.in
-itsdangerous==1.1.0
+itsdangerous==2.1.2
     # via flask
-jinja2==2.11.3
+jinja2==3.1.2
     # via
     #   -r base.in
     #   flask
-markupsafe==1.1.1
-    # via jinja2
+markupsafe==2.1.3
+    # via
+    #   jinja2
+    #   werkzeug
 pep517==0.10.0
     # via pip-tools
 pip-tools==6.0.1
@@ -51,7 +53,7 @@ toml==0.10.2
     # via pep517
 urllib3==1.26.5
     # via sentry-sdk
-werkzeug==1.0.1
+werkzeug==2.3.7
     # via flask
 
 # The following packages are considered to be unsafe in a requirements file:
