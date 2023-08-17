@@ -41,7 +41,7 @@ gitdb==4.0.7
     # via
     #   -r base.txt
     #   gitpython
-gitpython==3.1.14
+gitpython==3.1.32
     # via -r base.txt
 green==3.2.5
     # via -r test.in
