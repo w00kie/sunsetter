@@ -6,7 +6,7 @@
 #
 blinker==1.4
     # via sentry-sdk
-certifi==2020.12.5
+certifi==2023.7.22
     # via sentry-sdk
 click==7.1.2
     # via
@@ -14,13 +14,13 @@ click==7.1.2
     #   pip-tools
 envparse==0.2.0
     # via -r base.in
-flask-cdn==1.5.3
-    # via -r base.in
 flask==1.1.2
     # via
     #   -r base.in
     #   flask-cdn
     #   sentry-sdk
+flask-cdn==1.5.3
+    # via -r base.in
 gitdb==4.0.7
     # via gitpython
 gitpython==3.1.14
