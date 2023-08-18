@@ -9,18 +9,17 @@ clean:
 	rm -rf screenshots
 
 build-test:
-	docker-compose -f docker-compose.test.yml -p test build
+	docker compose -f docker-compose.test.yml build web
 
 up:
-	docker-compose -f docker-compose.test.yml -p test up
+	docker compose -f docker-compose.test.yml up
 
 down:
-	docker-compose -f docker-compose.test.yml -p test down
+	docker compose -f docker-compose.test.yml down
 
 test: clean
-	docker-compose -f docker-compose.test.yml -p test \
-		run --rm --entrypoint green \
-		web -vvv --run-coverage
+	docker compose -f docker-compose.test.yml \
+		run web python -m coverage run -m pytest
 
 build-cloudrun:
 	docker build --build-arg GIT_COMMIT_SHA1_BUILD \

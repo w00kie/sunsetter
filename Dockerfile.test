@@ -1,4 +1,4 @@
-FROM joyzoursky/python-chromedriver:3.8-alpine3.10-selenium as base
+FROM joyzoursky/python-chromedriver:3.9-selenium as base
 
 FROM base as builder
 
@@ -7,11 +7,6 @@ WORKDIR /install
 
 COPY requirements/test.txt /install/requirements.txt
 
-RUN apk add --update \
-        g++ \
-        libxml2 \
-        libxml2-dev &&\
-    apk add libxslt-dev
 RUN pip install --prefix=/install -r /install/requirements.txt
 
 FROM base
@@ -23,6 +18,7 @@ WORKDIR ${INSTALL_PATH}
 ARG GIT_COMMIT_SHA1_BUILD
 ENV GIT_COMMIT_SHA1=${GIT_COMMIT_SHA1_BUILD}
 
+ENV FLASK_APP=app
 ENV FLASK_RUN_PORT=8000
 EXPOSE ${FLASK_RUN_PORT}
 
@@ -32,4 +28,5 @@ COPY --from=builder /install /usr/local
 
 COPY . .
 
-ENTRYPOINT [ "flask", "run", "--cert=localhost.pem", "--key=localhost-key.pem", "--host=0.0.0.0" ]
+CMD [ "flask", "run", "--host=0.0.0.0" ]
+# ENTRYPOINT [ "flask", "run", "--cert=localhost.pem", "--key=localhost-key.pem", "--host=0.0.0.0" ]

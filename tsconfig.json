@@ -4,7 +4,7 @@
         "allowJs": true,
         "target": "es5",
         "types": [
-            "googlemaps",
+            "google.maps",
             "google.analytics"
         ]
     },

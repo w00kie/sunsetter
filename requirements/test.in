@@ -1,7 +1,8 @@
 -r base.txt
 
-Flask-Testing
-green
+pip-tools
+pytest
+coverage
 pylint
 autopep8
 selenium
