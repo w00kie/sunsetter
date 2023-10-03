@@ -136,7 +136,7 @@ trio==0.22.2
     #   trio-websocket
 trio-websocket==0.10.3
     # via selenium
-urllib3[socks]==2.0.4
+urllib3[socks]==2.0.6
     # via
     #   -r base.txt
     #   selenium
