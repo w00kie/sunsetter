@@ -141,7 +141,7 @@ urllib3[socks]==2.0.4
     #   -r base.txt
     #   selenium
     #   sentry-sdk
-werkzeug==2.3.7
+werkzeug==3.0.1
     # via
     #   -r base.txt
     #   flask

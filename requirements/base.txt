@@ -62,7 +62,7 @@ smmap==5.0.0
     # via gitdb
 urllib3==2.0.4
     # via sentry-sdk
-werkzeug==2.3.7
+werkzeug==3.0.1
     # via flask
 wheel==0.41.1
     # via pip-tools
