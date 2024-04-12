@@ -59,7 +59,7 @@ gunicorn==21.2.0
     # via -r base.txt
 h11==0.14.0
     # via wsproto
-idna==3.4
+idna==3.7
     # via trio
 iniconfig==2.0.0
     # via pytest
@@ -122,9 +122,7 @@ pytz==2023.3
 selenium==4.11.2
     # via -r test.in
 sentry-sdk[flask]==1.29.2
-    # via
-    #   -r base.txt
-    #   sentry-sdk
+    # via -r base.txt
 smmap==5.0.0
     # via
     #   -r base.txt
