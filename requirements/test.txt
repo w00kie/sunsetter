@@ -55,7 +55,7 @@ gitdb==4.0.10
     #   gitpython
 gitpython==3.1.41
     # via -r base.txt
-gunicorn==21.2.0
+gunicorn==22.0.0
     # via -r base.txt
 h11==0.14.0
     # via wsproto
