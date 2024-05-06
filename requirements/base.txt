@@ -67,7 +67,7 @@ tomli==2.0.1
     #   pyproject-hooks
 urllib3==2.0.7
     # via sentry-sdk
-werkzeug==3.0.1
+werkzeug==3.0.3
     # via flask
 wheel==0.41.1
     # via pip-tools
