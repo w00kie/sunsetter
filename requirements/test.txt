@@ -21,7 +21,7 @@ build==0.10.0
     # via
     #   -r base.txt
     #   pip-tools
-certifi==2023.7.22
+certifi==2024.7.4
     # via
     #   -r base.txt
     #   selenium
