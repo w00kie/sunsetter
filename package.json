@@ -1,21 +1,25 @@
 {
-	"name": "sunsetter",
-	"version": "1.0.0",
-	"private": true,
-	"dependencies": {
-		"@sentry/cli": "^1.42.0",
-		"spin.js": "^4.0.0"
-	},
-	"scripts": {
-		"build": "webpack"
-	},
-	"devDependencies": {
-		"@types/google.analytics": "^0.0.41",
-		"@types/googlemaps": "^3.39.11",
-		"awesome-typescript-loader": "^5.2.1",
-		"source-map-loader": "^2.0.1",
-		"typescript": "^4.2.3",
-		"webpack": "^5.27.1",
-		"webpack-cli": "^4.5.0"
-	}
+  "name": "sunsetter",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20 <26"
+  },
+  "scripts": {
+    "build": "bun run build:assets && bun run build:js && bun run build:css",
+    "build:assets": "mkdir -p dist && cp -R public/. dist/",
+    "build:js": "esbuild frontend/app.ts --bundle --minify --outfile=dist/app.js",
+    "build:css": "esbuild frontend/app.css --bundle --minify --outfile=dist/app.css",
+    "dev": "bun run build && uv run pywrangler dev",
+    "deploy": "bun run build && uv run pywrangler deploy",
+    "test": "bunx tsc && bun run build && uv run python -m unittest discover -s tests"
+  },
+  "dependencies": {
+    "maplibre-gl": "^5.24.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1",
+    "typescript": "^7.0.2"
+  }
 }

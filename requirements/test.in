@@ -1,7 +1,0 @@
--r base.txt
-
-Flask-Testing
-green
-pylint
-autopep8
-selenium

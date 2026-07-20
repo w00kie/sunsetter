@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#1b2227">
+    <meta name="description" content="Find the days when the sun rises or sets along any sightline.">
+    <title>Sunsetter — Find the light</title>
+    <link rel="stylesheet" href="/app.css">
+  </head>
+  <body data-step="1">
+    <main>
+      <div id="map" aria-label="Interactive map for choosing a point of view and sun direction"></div>
+      <a class="brand" href="/" aria-label="Sunsetter home"><span class="brand__sun"></span>Sunsetter</a>
+      <section class="panel" aria-live="polite">
+        <p class="eyebrow" id="eyebrow">Step 1 of 3</p>
+        <h1 id="status">Choose where you’ll stand</h1>
+        <p class="hint">Tap the map twice: first your viewpoint, then the horizon where you want the sun.</p>
+        <div class="steps" aria-hidden="true"><span>1</span><span>2</span><span>3</span></div>
+        <div class="result" id="result">
+          <span>Sun alignment</span>
+          <strong>Two points reveal the dates</strong>
+        </div>
+        <div class="actions">
+          <button class="action action--primary" id="locate" type="button">Use my location</button>
+          <button class="action" id="share" type="button" hidden>Share view</button>
+          <button class="action" id="reset" type="button" hidden>Reset</button>
+        </div>
+        <p class="footer">Open map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>. Tiles by <a href="https://openfreemap.org">OpenFreeMap</a>.</p>
+      </section>
+    </main>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
