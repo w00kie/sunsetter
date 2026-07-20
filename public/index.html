@@ -7,7 +7,7 @@
     <meta name="description" content="Find the days when the sun rises or sets along any sightline.">
     <title>Sunsetter — Find the light</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="/app.css">
+    <link rel="stylesheet" href="/app.css?v=3">
   </head>
   <body data-step="1">
     <main>
@@ -17,6 +17,7 @@
         <p class="eyebrow" id="eyebrow">Step 1 of 3</p>
         <h1 id="status">Choose where you’ll stand</h1>
         <p class="hint">Tap the map twice: first your viewpoint, then the horizon where you want the sun.</p>
+        <button class="help-trigger" id="help-open" type="button" aria-haspopup="dialog">What exactly are we calculating?</button>
         <div class="steps" aria-hidden="true"><span>1</span><span>2</span><span>3</span></div>
         <div class="result" id="result">
           <span>Sun alignment</span>
@@ -29,7 +30,40 @@
         </div>
         <p class="footer">Open map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>. Tiles by <a href="https://openfreemap.org">OpenFreeMap</a>.</p>
       </section>
+      <dialog class="help" id="help" aria-labelledby="help-title">
+        <button class="help__close" id="help-close" type="button" aria-label="Close explanation">&times;</button>
+        <p class="eyebrow">How Sunsetter works</p>
+        <h2 id="help-title">The instant the Sun meets the horizon</h2>
+        <figure class="horizon-diagram">
+          <svg viewBox="0 0 520 250" role="img" aria-labelledby="diagram-title diagram-desc">
+            <title id="diagram-title">The Sun's lower limb touching the horizon</title>
+            <desc id="diagram-desc">An orange sun rests with its lower edge on a horizontal line. An arrow labels that contact point as the lower limb.</desc>
+            <defs>
+              <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#3d5360"/>
+                <stop offset="1" stop-color="#704d48"/>
+              </linearGradient>
+              <radialGradient id="sun" cx="42%" cy="38%">
+                <stop offset="0" stop-color="#ffd995"/>
+                <stop offset="1" stop-color="#f08a4b"/>
+              </radialGradient>
+            </defs>
+            <rect width="520" height="250" rx="18" fill="url(#sky)"/>
+            <circle cx="190" cy="128" r="68" fill="url(#sun)"/>
+            <line x1="24" y1="196" x2="496" y2="196" stroke="#f8f1e8" stroke-width="3"/>
+            <text x="28" y="224" fill="#d5dcde" font-size="15">horizon</text>
+            <path d="M362 118 C320 126 282 154 203 188" fill="none" stroke="#f8f1e8" stroke-width="2"/>
+            <path d="M203 188 l14 -2 -8 12" fill="#f8f1e8"/>
+            <circle cx="190" cy="196" r="6" fill="#fff7ec"/>
+            <text x="369" y="113" fill="#fff7ec" font-size="16" font-weight="600">lower limb</text>
+            <text x="369" y="133" fill="#d5dcde" font-size="13">the Sun's lower edge</text>
+          </svg>
+          <figcaption>The “lower limb” is simply the bottom edge of the Sun.</figcaption>
+        </figure>
+        <p>We show the dates when that lower edge just touches the horizon along your chosen sightline. In the calculation, the Sun’s center is 0.25° above the geometric horizon.</p>
+        <p class="help__note">This is an astronomical alignment. Local terrain, buildings, weather, and atmospheric effects can change what you actually see.</p>
+      </dialog>
     </main>
-    <script type="module" src="/app.js?v=2"></script>
+    <script type="module" src="/app.js?v=3"></script>
   </body>
 </html>

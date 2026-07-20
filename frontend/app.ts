@@ -21,6 +21,9 @@ const result = document.querySelector<HTMLElement>("#result")!
 const resetButton = document.querySelector<HTMLButtonElement>("#reset")!
 const locateButton = document.querySelector<HTMLButtonElement>("#locate")!
 const shareButton = document.querySelector<HTMLButtonElement>("#share")!
+const help = document.querySelector<HTMLDialogElement>("#help")!
+const helpOpen = document.querySelector<HTMLButtonElement>("#help-open")!
+const helpClose = document.querySelector<HTMLButtonElement>("#help-close")!
 
 const toPoint = (position: LngLat): Point => ({ lat: position.lat, lng: position.lng })
 
@@ -191,6 +194,11 @@ shareButton.addEventListener("click", async () => {
   await navigator.clipboard.writeText(location.href)
   shareButton.textContent = "Link copied"
   window.setTimeout(() => { shareButton.textContent = "Share view" }, 1800)
+})
+helpOpen.addEventListener("click", () => help.showModal())
+helpClose.addEventListener("click", () => help.close())
+help.addEventListener("click", event => {
+  if (event.target === help) help.close()
 })
 
 updateInstructions()
