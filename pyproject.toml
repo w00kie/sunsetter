@@ -3,7 +3,7 @@ name = "sunsetter"
 version = "2.0.0"
 description = "Find the days when the sun rises or sets along a chosen sightline"
 requires-python = ">=3.13,<3.15"
-dependencies = []
+dependencies = ["pysolar==0.13"]
 
 [dependency-groups]
 dev = [

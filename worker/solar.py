@@ -1,57 +1,81 @@
-"""Solar alignment calculations used by the Worker and local tests."""
+"""The original, field-tested Sunsetter solar alignment calculation."""
 
-from datetime import date, timedelta
-from math import acos, cos, degrees, pi, radians, sin
+import datetime
+import math
 
-HORIZON_ZENITH = 89.75  # Lower limb touches the horizon.
+from pysolar import solar
 
-
-def solar_declination(day: int) -> float:
-    """Approximate solar declination in degrees for a 1-based day of year."""
-    return 23.45 * sin((2 * pi / 365) * (284 + day))
+FULL_SUN = 89.75  # Lower limb touches horizon.
+SUNRISE_TYPE = FULL_SUN
 
 
-def sunrise_azimuth(latitude: float, day: int) -> float:
-    declination = radians(solar_declination(day))
-    latitude_radians = radians(latitude)
-    zenith = radians(HORIZON_ZENITH)
-    numerator = sin(latitude_radians) * cos(zenith) - sin(declination)
-    denominator = cos(latitude_radians) * sin(zenith)
-    value = max(-1.0, min(1.0, -numerator / denominator))
-    return degrees(acos(value))
+def closest(target, collection):
+    return min((abs(target - value), value) for value in collection)[1]
 
 
-def ephemerides(latitude: float) -> list[tuple[float, float]]:
-    if not -66 <= latitude <= 66:
-        raise ValueError("Latitude must be between -66 and 66 degrees")
-    return [(azimuth := sunrise_azimuth(latitude, day), 360 - azimuth) for day in range(1, 366)]
+def GetSunriseAzymuth(lat, day):
+    decl = math.radians(solar.get_declination(day))
+    lat_rad = math.radians(lat)
+    zenith_rad = math.radians(SUNRISE_TYPE)
+
+    first_term = math.sin(lat_rad) * math.cos(zenith_rad) - math.sin(decl)
+    second_term = math.cos(lat_rad) * math.sin(zenith_rad)
+    return math.degrees(math.acos(-first_term / second_term))
 
 
-def _closest_index(values: list[float], target: float, indexes: range) -> int:
-    return min(indexes, key=lambda index: abs(values[index] - target))
+def GetEphemerides(lat):
+    fullyear = []
+    for day in range(1, 366):
+        sunrise_azimuth = GetSunriseAzymuth(lat, day)
+        fullyear.append([sunrise_azimuth, 360 - sunrise_azimuth])
+    return fullyear
 
 
-def matching_days(latitude: float, azimuth: float, year: int | None = None) -> dict:
+def GetDateFromDay(day, year=None):
+    this_year = datetime.date(year or datetime.date.today().year, 1, 1)
+    return (this_year + datetime.timedelta(days=day - 1)).strftime("%B %d")
+
+
+def GetMatchingDay(fullyear, azimuth, year=None):
+    if azimuth < 180:
+        sun_type = "Sunrise"
+        fullyear = [sunrise for sunrise, _ in fullyear]
+    else:
+        sun_type = "Sunset"
+        fullyear = [sunset for _, sunset in fullyear]
+
+    if azimuth < min(fullyear) or azimuth > max(fullyear):
+        return {"suntype": sun_type}
+
+    summer_solstice = 172
+    winter_solstice = 356 - 365
+    fall_closest = closest(azimuth, fullyear[summer_solstice:winter_solstice])
+    spring_closest = closest(
+        azimuth, fullyear[winter_solstice:] + fullyear[:summer_solstice]
+    )
+    matches = [
+        GetDateFromDay(fullyear.index(spring_closest), year),
+        GetDateFromDay(fullyear.index(fall_closest), year),
+    ]
+    return {"suntype": sun_type, "matches": matches}
+
+
+def ephemerides(latitude):
+    return GetEphemerides(latitude)
+
+
+def matching_days(latitude, azimuth, year=None):
     if not 0 <= azimuth < 360:
         raise ValueError("Azimuth must be between 0 and 360 degrees")
 
-    year = year or date.today().year
-    annual = ephemerides(latitude)
-    sun_type = "Sunrise" if azimuth < 180 else "Sunset"
-    values = [pair[0 if sun_type == "Sunrise" else 1] for pair in annual]
-
-    if azimuth < min(values) or azimuth > max(values):
-        return {"suntype": sun_type, "matches": []}
-
-    # Each alignment occurs once on either side of the summer solstice.
-    first = _closest_index(values, azimuth, range(0, 172))
-    second = _closest_index(values, azimuth, range(172, 365))
-    start = date(year, 1, 1)
-    dates = [start + timedelta(days=index) for index in sorted((first, second))]
-
+    year = year or datetime.date.today().year
+    result = GetMatchingDay(GetEphemerides(latitude), azimuth, year)
+    labels = result.get("matches", [])
     return {
-        "suntype": sun_type,
-        "matches": [value.isoformat() for value in dates],
-        "labels": [value.strftime("%B %-d") for value in dates],
+        "suntype": result["suntype"],
+        "matches": [
+            datetime.datetime.strptime(f"{label} {year}", "%B %d %Y").date().isoformat()
+            for label in labels
+        ],
+        "labels": [label.replace(" 0", " ") for label in labels],
     }
-
