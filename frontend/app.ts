@@ -43,7 +43,7 @@ function markerElement(kind: "pov" | "poi"): HTMLButtonElement {
 }
 
 function addMarker(kind: "pov" | "poi", point: Point): void {
-  const marker = new maplibregl.Marker({ element: markerElement(kind), draggable: true })
+  const marker = new maplibregl.Marker({ element: markerElement(kind), draggable: true, anchor: "bottom-left" })
     .setLngLat([point.lng, point.lat])
     .addTo(map)
 
