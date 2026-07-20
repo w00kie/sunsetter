@@ -1,4 +1,4 @@
-import maplibregl, { LngLat, LngLatBounds, Marker } from "maplibre-gl"
+import maplibregl, { type LngLat, LngLatBounds, type Marker } from "maplibre-gl"
 
 type Point = { lat: number; lng: number }
 type MatchResult = { suntype: "Sunrise" | "Sunset"; matches: string[]; labels: string[] }
@@ -28,12 +28,12 @@ const helpClose = document.querySelector<HTMLButtonElement>("#help-close")!
 const toPoint = (position: LngLat): Point => ({ lat: position.lat, lng: position.lng })
 
 function bearing(from: Point, to: Point): number {
-  const φ1 = from.lat * Math.PI / 180
-  const φ2 = to.lat * Math.PI / 180
-  const Δλ = (to.lng - from.lng) * Math.PI / 180
+  const φ1 = (from.lat * Math.PI) / 180
+  const φ2 = (to.lat * Math.PI) / 180
+  const Δλ = ((to.lng - from.lng) * Math.PI) / 180
   const y = Math.sin(Δλ) * Math.cos(φ2)
   const x = Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ)
-  return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360
+  return ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360
 }
 
 function markerElement(kind: "pov" | "poi"): HTMLButtonElement {
@@ -41,7 +41,7 @@ function markerElement(kind: "pov" | "poi"): HTMLButtonElement {
   element.className = `marker marker--${kind}`
   element.type = "button"
   element.setAttribute("aria-label", kind === "pov" ? "Point of view" : "Sun direction")
-  element.innerHTML = kind === "pov" ? '<span>YOU</span>' : '<span aria-hidden="true">☀</span>'
+  element.innerHTML = kind === "pov" ? "<span>YOU</span>" : '<span aria-hidden="true">☀</span>'
   return element
 }
 
@@ -61,9 +61,13 @@ function addMarker(kind: "pov" | "poi", point: Point): void {
 
 function drawLine(): void {
   const source = map.getSource("sightline") as maplibregl.GeoJSONSource | undefined
-  const coordinates = state.pov && state.poi
-    ? [[state.pov.lng, state.pov.lat], [state.poi.lng, state.poi.lat]]
-    : []
+  const coordinates =
+    state.pov && state.poi
+      ? [
+          [state.pov.lng, state.pov.lat],
+          [state.poi.lng, state.poi.lat],
+        ]
+      : []
   source?.setData({ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates } })
 }
 
@@ -71,11 +75,8 @@ function updateInstructions(): void {
   const step = state.poi ? 3 : state.pov ? 2 : 1
   document.body.dataset.step = String(step)
   eyebrow.textContent = `Step ${step} of 3`
-  status.textContent = step === 1
-    ? "Choose where you’ll stand"
-    : step === 2
-      ? "Choose where you’ll look"
-      : "Drag either marker to refine"
+  status.textContent =
+    step === 1 ? "Choose where you’ll stand" : step === 2 ? "Choose where you’ll look" : "Drag either marker to refine"
   resetButton.hidden = step === 1
   shareButton.hidden = step !== 3
 }
@@ -98,7 +99,7 @@ async function calculate(): Promise<void> {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ lat: state.pov.lat, az: azimuth }),
     })
-    const data = await response.json() as MatchResult & { error?: string }
+    const data = (await response.json()) as MatchResult & { error?: string }
     if (!response.ok) throw new Error(data.error || "Calculation failed")
 
     result.className = `result result--ready result--${data.suntype.toLowerCase()}`
@@ -126,13 +127,15 @@ function selectPoint(point: Point): void {
 }
 
 function reset(): void {
-  state.markers.forEach(marker => marker.remove())
+  state.markers.forEach((marker) => {
+    marker.remove()
+  })
   state.markers = []
   delete state.pov
   delete state.poi
   drawLine()
   result.className = "result"
-  result.innerHTML = '<span>Sun alignment</span><strong>Two points reveal the dates</strong>'
+  result.innerHTML = "<span>Sun alignment</span><strong>Two points reveal the dates</strong>"
   history.replaceState(null, "", `${location.pathname}${location.search}`)
   updateInstructions()
 }
@@ -176,28 +179,38 @@ map.on("load", () => {
   if (saved) {
     selectPoint(saved[0])
     selectPoint(saved[1])
-    const padding = window.innerWidth <= 720
-      ? { top: 60, right: 40, bottom: 400, left: 40 }
-      : { top: 80, right: 450, bottom: 80, left: 80 }
-    map.fitBounds(new LngLatBounds().extend([saved[0].lng, saved[0].lat]).extend([saved[1].lng, saved[1].lat]), { padding, maxZoom: 13 })
+    const padding =
+      window.innerWidth <= 720
+        ? { top: 60, right: 40, bottom: 400, left: 40 }
+        : { top: 80, right: 450, bottom: 80, left: 80 }
+    map.fitBounds(new LngLatBounds().extend([saved[0].lng, saved[0].lat]).extend([saved[1].lng, saved[1].lat]), {
+      padding,
+      maxZoom: 13,
+    })
   }
 })
 
-map.on("click", event => selectPoint(toPoint(event.lngLat)))
+map.on("click", (event) => selectPoint(toPoint(event.lngLat)))
 resetButton.addEventListener("click", reset)
-locateButton.addEventListener("click", () => navigator.geolocation?.getCurrentPosition(
-  ({ coords }) => map.flyTo({ center: [coords.longitude, coords.latitude], zoom: 12, essential: true }),
-  () => { status.textContent = "Location access wasn’t available" },
-  { enableHighAccuracy: true, timeout: 8000 },
-))
+locateButton.addEventListener("click", () =>
+  navigator.geolocation?.getCurrentPosition(
+    ({ coords }) => map.flyTo({ center: [coords.longitude, coords.latitude], zoom: 12, essential: true }),
+    () => {
+      status.textContent = "Location access wasn’t available"
+    },
+    { enableHighAccuracy: true, timeout: 8000 },
+  ),
+)
 shareButton.addEventListener("click", async () => {
   await navigator.clipboard.writeText(location.href)
   shareButton.textContent = "Link copied"
-  window.setTimeout(() => { shareButton.textContent = "Share view" }, 1800)
+  window.setTimeout(() => {
+    shareButton.textContent = "Share view"
+  }, 1800)
 })
 helpOpen.addEventListener("click", () => help.showModal())
 helpClose.addEventListener("click", () => help.close())
-help.addEventListener("click", event => {
+help.addEventListener("click", (event) => {
   if (event.target === help) help.close()
 })
 

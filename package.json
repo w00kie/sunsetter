@@ -11,15 +11,20 @@
     "build:assets": "mkdir -p dist && cp -R public/. dist/",
     "build:js": "esbuild frontend/app.ts --bundle --minify --outfile=dist/app.js",
     "build:css": "esbuild frontend/app.css --bundle --minify --outfile=dist/app.css",
+    "check": "biome check .",
     "dev": "bun run build && uv run pywrangler dev",
     "deploy": "bun run build && uv run pywrangler deploy",
+    "format": "biome format --write .",
+    "lint": "biome lint .",
     "test": "bunx tsc && bun run build && uv run python -m unittest discover -s tests"
   },
   "dependencies": {
     "maplibre-gl": "^5.24.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.4",
     "esbuild": "^0.28.1",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "wrangler": "4.112.0"
   }
 }

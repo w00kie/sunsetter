@@ -14,4 +14,5 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - run: uv sync --locked
       - run: bun install --frozen-lockfile
+      - run: bun run check
       - run: bun run test
