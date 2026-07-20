@@ -173,7 +173,10 @@ map.on("load", () => {
   if (saved) {
     selectPoint(saved[0])
     selectPoint(saved[1])
-    map.fitBounds(new LngLatBounds([saved[0].lng, saved[0].lat], [saved[1].lng, saved[1].lat]), { padding: 120, maxZoom: 13 })
+    const padding = window.innerWidth <= 720
+      ? { top: 60, right: 40, bottom: 400, left: 40 }
+      : { top: 80, right: 450, bottom: 80, left: 80 }
+    map.fitBounds(new LngLatBounds().extend([saved[0].lng, saved[0].lat]).extend([saved[1].lng, saved[1].lat]), { padding, maxZoom: 13 })
   }
 })
 

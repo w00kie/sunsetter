@@ -173,10 +173,8 @@ button { font: inherit; }
   box-shadow: 0 6px 20px rgba(19, 24, 28, .35);
   cursor: grab;
   transform: rotate(-45deg);
-  transition: scale .2s;
 }
 
-.marker:hover { scale: 1.08; }
 .marker span { font-size: 9px; font-weight: 700; transform: rotate(45deg); }
 .marker--poi { color: #332117; background: #f5a36d; }
 .marker--poi span { font-size: 19px; }
