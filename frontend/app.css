@@ -14,15 +14,21 @@
 
 html,
 body,
-main,
-#map {
+main {
   width: 100%;
-  height: 100%;
+  height: 100lvh;
   margin: 0;
 }
 
 body {
   overflow: hidden;
+}
+
+#map {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100lvh;
 }
 
 #map::after {
@@ -293,6 +299,9 @@ button {
 }
 
 .action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 44px;
   padding: 0 16px;
   color: #f5ece3;
@@ -304,6 +313,21 @@ button {
     background 0.2s,
     border-color 0.2s,
     transform 0.2s;
+}
+
+.action__icon,
+.action--mobile {
+  display: none;
+}
+
+.action__icon {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .action:hover {
@@ -403,7 +427,7 @@ button {
   .panel {
     top: auto;
     right: 10px;
-    bottom: 10px;
+    bottom: calc(100lvh - 100dvh + 10px);
     left: 10px;
     width: auto;
     min-height: 280px;
@@ -418,8 +442,14 @@ button {
     margin: 12px 0 4px;
     font-size: 14px;
   }
-  .help-trigger {
-    margin-bottom: 14px;
+  .help-trigger,
+  body[data-step="3"] .hint {
+    display: none;
+  }
+  body[data-step="1"] .result,
+  body[data-step="2"] .result,
+  body[data-step="3"] .steps {
+    display: none;
   }
   .steps {
     margin-bottom: 16px;
@@ -433,6 +463,18 @@ button {
   }
   .actions {
     margin-top: 16px;
+  }
+  .action {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+  }
+  .action--mobile,
+  .action__icon {
+    display: inline-flex;
+  }
+  .action__label {
+    display: none;
   }
   .footer {
     display: none;

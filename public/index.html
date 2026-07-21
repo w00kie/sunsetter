@@ -7,7 +7,7 @@
     <meta name="description" content="Find the days when the sun rises or sets along any sightline.">
     <title>Sunsetter — Find the light</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="/app.css?v=3">
+    <link rel="stylesheet" href="/app.css?v=5">
   </head>
   <body data-step="1">
     <main>
@@ -24,9 +24,21 @@
           <strong>Two points reveal the dates</strong>
         </div>
         <div class="actions">
-          <button class="action action--primary" id="locate" type="button">Use my location</button>
-          <button class="action" id="share" type="button" hidden>Share view</button>
-          <button class="action" id="reset" type="button" hidden>Reset</button>
+          <button class="action action--primary" id="locate" type="button" aria-label="Use my location" title="Use my location">
+            <svg class="action__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span class="action__label">Use my location</span>
+          </button>
+          <button class="action" id="share" type="button" aria-label="Share view" title="Share view" hidden>
+            <svg class="action__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51 8.59 10.49"/></svg>
+            <span class="action__label">Share view</span>
+          </button>
+          <button class="action" id="reset" type="button" aria-label="Reset" title="Reset" hidden>
+            <svg class="action__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+            <span class="action__label">Reset</span>
+          </button>
+          <button class="action action--mobile" id="help-mobile" type="button" aria-label="How Sunsetter works" title="How Sunsetter works" aria-haspopup="dialog">
+            <svg class="action__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 1 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+          </button>
         </div>
         <p class="footer">Open map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>. Tiles by <a href="https://openfreemap.org">OpenFreeMap</a>.</p>
       </section>
@@ -64,7 +76,7 @@
         <p class="help__note">This is an astronomical alignment. Local terrain, buildings, weather, and atmospheric effects can change what you actually see.</p>
       </dialog>
     </main>
-    <script type="module" src="/app.js?v=3"></script>
+    <script type="module" src="/app.js?v=4"></script>
     <!-- Cloudflare Web Analytics -->
     <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "6d728e54b8264515bd44a9b73af9b5cd"}'></script>
     <!-- End Cloudflare Web Analytics -->

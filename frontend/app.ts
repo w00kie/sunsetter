@@ -23,6 +23,7 @@ const locateButton = document.querySelector<HTMLButtonElement>("#locate")!
 const shareButton = document.querySelector<HTMLButtonElement>("#share")!
 const help = document.querySelector<HTMLDialogElement>("#help")!
 const helpOpen = document.querySelector<HTMLButtonElement>("#help-open")!
+const helpMobile = document.querySelector<HTMLButtonElement>("#help-mobile")!
 const helpClose = document.querySelector<HTMLButtonElement>("#help-close")!
 
 const toPoint = (position: LngLat): Point => ({ lat: position.lat, lng: position.lng })
@@ -203,12 +204,16 @@ locateButton.addEventListener("click", () =>
 )
 shareButton.addEventListener("click", async () => {
   await navigator.clipboard.writeText(location.href)
-  shareButton.textContent = "Link copied"
+  const label = shareButton.querySelector<HTMLElement>(".action__label")!
+  label.textContent = "Link copied"
+  shareButton.ariaLabel = "Link copied"
   window.setTimeout(() => {
-    shareButton.textContent = "Share view"
+    label.textContent = "Share view"
+    shareButton.ariaLabel = "Share view"
   }, 1800)
 })
 helpOpen.addEventListener("click", () => help.showModal())
+helpMobile.addEventListener("click", () => help.showModal())
 helpClose.addEventListener("click", () => help.close())
 help.addEventListener("click", (event) => {
   if (event.target === help) help.close()
