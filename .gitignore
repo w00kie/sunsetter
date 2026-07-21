@@ -1,5 +1,10 @@
-node_modules
-venv
+node_modules/
+.venv/
+.venv-workers/
+.wrangler/
+python_modules/
+dist/
+__pycache__/
 *.pyc
 .env
 .DS_Store

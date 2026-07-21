@@ -1,42 +1,18 @@
-name: Run tests
+name: Test
 
-on: ["push", "pull_request"]
+on: [push, pull_request]
 
 jobs:
   test:
-    name: Run Linter and Tests
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.9
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements/test.txt
-    - name: Lint with flake8
-      run: |
-        pip install flake8
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest and generate coverage
-      env:
-        MAPS_API: ${{ secrets.MAPS_API }}
-      run: |
-        pip install pytest
-        coverage run -m pytest
-    - name: Upload test screenshots
-      uses: actions/upload-artifact@v1
-      if: failure()
-      with:
-        name: screenshots
-        path: screenshots
-    - name: Coveralls
-      uses: AndreMiras/coveralls-python-action@develop
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.14"
+          enable-cache: true
+      - uses: oven-sh/setup-bun@v2
+      - run: uv sync --locked
+      - run: bun install --frozen-lockfile
+      - run: bun run check
+      - run: bun run test

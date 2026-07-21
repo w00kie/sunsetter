@@ -1,8 +1,0 @@
--r base.txt
-
-pip-tools
-pytest
-coverage
-pylint
-autopep8
-selenium

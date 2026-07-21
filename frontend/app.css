@@ -1,0 +1,472 @@
+@import "../node_modules/maplibre-gl/dist/maplibre-gl.css";
+
+:root {
+  color-scheme: dark;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  color: #f8f1e8;
+  background: #1d252b;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+main,
+#map {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+}
+
+#map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(16, 23, 28, 0.18), transparent 45%),
+    linear-gradient(0deg, rgba(20, 20, 24, 0.22), transparent 35%);
+}
+
+.brand {
+  position: fixed;
+  z-index: 4;
+  top: 28px;
+  left: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #20282e;
+  text-decoration: none;
+  font:
+    700 20px / 1 "Avenir Next",
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
+  letter-spacing: -0.04em;
+  text-shadow: 0 1px 12px rgba(255, 255, 255, 0.8);
+}
+
+.brand__sun {
+  width: 22px;
+  height: 22px;
+  border: 6px solid #f47b3d;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(32, 40, 46, 0.16);
+}
+
+.panel {
+  position: fixed;
+  z-index: 5;
+  top: 20px;
+  right: 20px;
+  bottom: 20px;
+  width: min(390px, calc(100vw - 40px));
+  display: flex;
+  flex-direction: column;
+  padding: 34px;
+  color: #f6eee5;
+  background: rgba(27, 34, 39, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  box-shadow: 0 24px 70px rgba(13, 18, 22, 0.28);
+  backdrop-filter: blur(20px);
+  animation: panel-in 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: #f6a56f;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+h1 {
+  max-width: 290px;
+  margin: 0;
+  font:
+    600 clamp(30px, 3vw, 42px) / 1.08 "Avenir Next",
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
+  letter-spacing: -0.055em;
+}
+
+.hint {
+  max-width: 300px;
+  margin: 18px 0 8px;
+  color: #abb5b9;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.help-trigger {
+  width: fit-content;
+  margin: 0 0 26px;
+  padding: 4px 0;
+  color: #f6a56f;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid rgba(246, 165, 111, 0.45);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.help-trigger:hover {
+  color: #ffc195;
+  border-color: currentColor;
+}
+.help-trigger:focus-visible,
+.help__close:focus-visible,
+.action:focus-visible {
+  outline: 2px solid #ffc195;
+  outline-offset: 3px;
+}
+
+.help {
+  width: min(520px, calc(100vw - 32px));
+  max-height: min(760px, calc(100svh - 32px));
+  padding: 32px;
+  overflow: auto;
+  color: #f6eee5;
+  background: #20292f;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  box-shadow: 0 32px 100px rgba(7, 11, 14, 0.5);
+}
+
+.help[open] {
+  animation: help-in 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.help::backdrop {
+  background: rgba(10, 15, 18, 0.65);
+  backdrop-filter: blur(5px);
+}
+.help .eyebrow {
+  margin-right: 34px;
+}
+
+.help h2 {
+  max-width: 400px;
+  margin: 0 0 22px;
+  font:
+    600 30px / 1.12 "Avenir Next",
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
+  letter-spacing: -0.045em;
+}
+
+.help p {
+  color: #c0c9cc;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.help__note {
+  margin-bottom: 0;
+  color: #8f9b9f !important;
+  font-size: 12px !important;
+}
+
+.help__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 38px;
+  height: 38px;
+  padding: 0 0 3px;
+  color: #dce2e3;
+  background: rgba(255, 255, 255, 0.07);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 25px;
+  line-height: 1;
+}
+
+.help__close:hover {
+  background: rgba(255, 255, 255, 0.13);
+}
+
+.horizon-diagram {
+  margin: 0 0 22px;
+}
+.horizon-diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.horizon-diagram figcaption {
+  margin-top: 9px;
+  color: #98a4a8;
+  font-size: 12px;
+}
+
+.steps {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.steps span {
+  width: 34px;
+  height: 3px;
+  overflow: hidden;
+  color: transparent;
+  background: #4c565b;
+  border-radius: 2px;
+  transition:
+    background 0.3s,
+    width 0.3s;
+}
+
+body[data-step="1"] .steps span:nth-child(1),
+body[data-step="2"] .steps span:nth-child(-n + 2),
+body[data-step="3"] .steps span {
+  background: #f47b3d;
+}
+
+.result {
+  min-height: 128px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px 0;
+  border-block: 1px solid rgba(255, 255, 255, 0.12);
+  transition: opacity 0.2s;
+}
+
+.result span {
+  color: #9fa9ad;
+  font-size: 13px;
+}
+.result strong {
+  margin-top: 7px;
+  font:
+    600 23px / 1.25 "Avenir Next",
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
+  letter-spacing: -0.035em;
+}
+.result small {
+  margin-top: 9px;
+  color: #9fa9ad;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.result--loading,
+.result--pending {
+  opacity: 0.7;
+}
+.result--sunrise strong {
+  color: #ffcc82;
+}
+.result--sunset strong {
+  color: #ff9b6b;
+}
+.result--error strong {
+  color: #ff8c86;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+button {
+  font: inherit;
+}
+
+.action {
+  min-height: 44px;
+  padding: 0 16px;
+  color: #f5ece3;
+  background: transparent;
+  border: 1px solid #556067;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    transform 0.2s;
+}
+
+.action:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #77838a;
+}
+.action:active {
+  transform: scale(0.97);
+}
+.action--primary {
+  color: #241c17;
+  background: #f5a36d;
+  border-color: #f5a36d;
+}
+.action--primary:hover {
+  background: #ffb47f;
+  border-color: #ffb47f;
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 24px;
+  color: #788388;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.footer a {
+  color: #aab3b7;
+}
+
+.marker {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: white;
+  background: #20292f;
+  border: 3px solid white;
+  border-radius: 50% 50% 50% 8px;
+  box-shadow: 0 6px 20px rgba(19, 24, 28, 0.35);
+  cursor: grab;
+  transform: rotate(-45deg);
+}
+
+.marker span {
+  font-size: 9px;
+  font-weight: 700;
+  transform: rotate(45deg);
+}
+.marker--poi {
+  color: #332117;
+  background: #f5a36d;
+}
+.marker--poi span {
+  font-size: 19px;
+}
+
+.maplibregl-ctrl-bottom-right {
+  right: 430px;
+  bottom: 16px;
+}
+.maplibregl-ctrl-group {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes help-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 720px) {
+  .brand {
+    top: 19px;
+    left: 20px;
+    font-size: 18px;
+  }
+  .panel {
+    top: auto;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    width: auto;
+    min-height: 280px;
+    padding: 24px;
+    border-radius: 22px;
+    animation-name: sheet-in;
+  }
+  h1 {
+    font-size: 29px;
+  }
+  .hint {
+    margin: 12px 0 4px;
+    font-size: 14px;
+  }
+  .help-trigger {
+    margin-bottom: 14px;
+  }
+  .steps {
+    margin-bottom: 16px;
+  }
+  .result {
+    min-height: 90px;
+    padding: 16px 0;
+  }
+  .result strong {
+    font-size: 20px;
+  }
+  .actions {
+    margin-top: 16px;
+  }
+  .footer {
+    display: none;
+  }
+  .maplibregl-ctrl-bottom-right {
+    right: 5px;
+    bottom: 310px;
+  }
+  .help {
+    padding: 26px 22px 24px;
+    border-radius: 20px;
+  }
+  .help h2 {
+    font-size: 26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

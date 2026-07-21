@@ -1,0 +1,18 @@
+lock-version = "1.0"
+created-by = "uv"
+requires-python = ">=3.13.2"
+
+[[packages]]
+name = "numpy"
+version = "2.2.5"
+wheels = [{ url = "https://cdn.jsdelivr.net/pyodide/v0.28.3/full/numpy-2.2.5-cp313-cp313-pyodide_2025_0_wasm32.whl", hashes = { sha256 = "3db3c4f3e0448f4d62a85c262692f1260ccd8a91335442bd2442f21ffeddb558" } }]
+
+[[packages]]
+name = "pysolar"
+version = "0.13"
+wheels = [{ url = "https://files.pythonhosted.org/packages/71/d4/d9440ff5da6547ac2587f93a9af7e779be0aed78e1f0734dede94e440f6b/pysolar-0.13-py3-none-any.whl", upload-time = 2025-01-04T15:31:46Z, size = 46930, hashes = { sha256 = "9019323af1a4db0b1cd5df5570b34a22b290f5ee817497aacfd63475779da004" } }]
+
+[[packages]]
+name = "workers-runtime-sdk"
+version = "1.6.3"
+wheels = [{ url = "https://files.pythonhosted.org/packages/b7/66/71a67674314fcc78709bfe6dc2ac6739d8411515afd3e532157376bd722d/workers_runtime_sdk-1.6.3-py3-none-any.whl", upload-time = 2026-07-17T08:24:11Z, size = 32252, hashes = { sha256 = "d0645a1a03c3422c8a9cac33577ae73c76f02d390df20261d4c11d60cff057f9" } }]
