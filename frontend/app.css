@@ -420,14 +420,14 @@ button {
 
 @media (max-width: 720px) {
   .brand {
-    top: 19px;
+    top: max(19px, calc(env(safe-area-inset-top) + 10px));
     left: 20px;
     font-size: 18px;
   }
   .panel {
     top: auto;
     right: 10px;
-    bottom: calc(100lvh - 100dvh + 10px);
+    bottom: max(10px, env(safe-area-inset-bottom));
     left: 10px;
     width: auto;
     min-height: 280px;
