@@ -1,7 +1,10 @@
-import maplibregl, { type LngLat, LngLatBounds, type Marker } from "maplibre-gl"
+import * as maplibregl from "maplibre-gl"
+import { type LngLat, LngLatBounds, type Marker } from "maplibre-gl"
 
 type Point = { lat: number; lng: number }
 type MatchResult = { suntype: "Sunrise" | "Sunset"; matches: string[]; labels: string[] }
+
+maplibregl.setWorkerUrl(new URL(`./maplibre-gl-worker.mjs?v=${maplibregl.getVersion()}`, import.meta.url).toString())
 
 const map = new maplibregl.Map({
   container: "map",
